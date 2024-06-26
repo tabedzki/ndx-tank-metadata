@@ -21,6 +21,10 @@ class MazeExtension(DynamicTable):
                   'color', 'numTrials', 'numTrialsPerMin', 'criteriaNTrials', 'warmupNTrials',
                   'numSessions', 'performance', 'maxBias', 'warmupMaze', 'warmupPerform',
                   'warmupBias', 'warmupMotor', 'easyBlock', 'easyBlockNTrials', 'numBlockTrials',
+                  'StartCycle', 'EndCycle', 'stimulusTable', 'rule', 'baseCycles', 'trialNum', 'hitHistory',
+                  'classHistory', 'multibiasBeta', 'multibiasTau', 'pairNum', 'wallGuide',
+                  'alpha_plus', 'alpha_minus', 'moonBeaconEnabled', 'moonBeaconPos', 'moonBeaconTrigger',
+                  'step_size', 'lsrON', 'moonDistHint', 'forcedChoice'
                   'blockPerform']
 
     __columns__ = tuple(
