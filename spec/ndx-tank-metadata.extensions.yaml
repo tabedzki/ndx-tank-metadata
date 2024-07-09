@@ -1,7 +1,7 @@
 groups:
 - neurodata_type_def: LabMetaDataExtension
   neurodata_type_inc: LabMetaData
-  doc: type for storing metadata for Tank lab
+  doc: type for storing metadata for Brody and Tank labs
   attributes:
   - name: experiment_name
     dtype: text
@@ -44,105 +44,105 @@ groups:
   attributes:
   - name: rig
     dtype: text
-    doc: rig information
+    doc: miniVR or normalVR (projection is changed based on rig type)
     required: false
   - name: simulationMode
     dtype: int
-    doc: rig information
+    doc: true to run in simulation mode with human input via keyboard
     required: false
   - name: hasDAQ
     dtype: int
-    doc: rig information
+    doc: false for testing on laptop
     required: false
   - name: hasSyncComm
     dtype: int
-    doc: rig information
+    doc: true if digital communications should be used for synchronization (ScanImage)
     required: false
   - name: minIterationDT
     dtype: float
-    doc: rig information
+    doc: Minimum expected ViRMEn frame rate in seconds
     required: false
   - name: arduinoPort
     dtype: text
-    doc: rig information
+    doc: Arduino port as seen in the Windows Device Manager
     required: false
   - name: sensorDotsPerRev
     dtype: float
     shape:
     - null
-    doc: rig information
+    doc: Sensor dots per ball revolution, obtained using the calibrateBall script
     required: false
   - name: ballCircumference
     dtype: float
-    doc: rig information
+    doc: in cm
     required: false
   - name: toroidXFormP1
     dtype: float
-    doc: rig information
+    doc: p1 parameter (slope) from poly1 fit of toroidal screen transformation
     required: false
   - name: toroidXFormP2
     dtype: float
-    doc: rig information
+    doc: p2 parameter (offset) from poly1 fit of toroidal screen transformation
     required: false
   - name: colorAdjustment
     dtype: float
     shape:
     - null
-    doc: rig information
+    doc: '[R; G; B] scale factor for projector display'
     required: false
   - name: soundAdjustment
     dtype: float
-    doc: rig information
+    doc: Scale factor for sound volume
     required: false
   - name: nidaqDevice
     dtype: int
-    doc: rig information
+    doc: NI-DAQ device identifier
     required: false
   - name: nidaqPort
     dtype: int
-    doc: rig information
+    doc: NI-DAQ port number
     required: false
   - name: nidaqLines
     dtype: int
     shape:
     - null
-    doc: rig information
+    doc: NI-DAQ lines for the specified port
     required: false
   - name: syncClockChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for I2C clock signal
     required: false
   - name: syncDataChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for I2C data signal
     required: false
   - name: rewardChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for turning on/off the solenoid valve
     required: false
   - name: rewardSize
     dtype: float
-    doc: rig information
+    doc: in mL
     required: false
   - name: rewardDuration
     dtype: float
-    doc: rig information
+    doc: Valve opening duration (in seconds) for 4uL reward
     required: false
   - name: laserChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for turning on/off the laser
     required: false
   - name: rightPuffChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for left air puff solenoid
     required: false
   - name: leftPuffChannel
     dtype: int
-    doc: rig information
+    doc: NI-DAQ digital line for right air puff solenoid
     required: false
   - name: webcam_name
     dtype: text
-    doc: rig information
+    doc: Webcam name
     required: false
 - neurodata_type_def: MazeExtension
   neurodata_type_inc: DynamicTable
