@@ -26,11 +26,19 @@ groups:
     doc: Performance of correct responses in %
     required: false
   - name: session_end_time
-    dtype: text
+    dtype: datetime
     doc: Datetime when session ended
   - name: num_trials
     dtype: int
     doc: Number of trials during the session
+  - name: timeElapsedFirstTrial
+    dtype: float
+    doc: Lapsed time from starting session to initialization and appearance of world
+      for first trial
+  - name: timeElapsedVideoStart
+    dtype: float
+    doc: Lapsed time between starting session and beginning of video acquisition;
+      used for Sychronizing face video and Virmen streams
   groups:
   - name: rig
     neurodata_type_inc: RigExtension
@@ -147,3 +155,104 @@ groups:
 - neurodata_type_def: MazeExtension
   neurodata_type_inc: DynamicTable
   doc: type for storing maze information
+  attributes:
+  - name: StartCycle
+    dtype: int
+    doc: PWM and spatfreq. The spatial frequency of the first stimulus shown to the
+      mouse.
+    required: false
+  - name: EndCycle
+    dtype: int
+    doc: PWM. The spatial frequency of the second stimulus shown to the mouse.
+    required: false
+  - name: stimulusTable
+    dtype: object
+    doc: PWM. Cell array containing the various (StartCycle,EndCycle) pairs that can
+      be shown, their probabilities, their hitrates, the times they've been shown,
+      etc.
+    required: false
+  - name: rule
+    dtype: utf-8
+    doc: PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle
+      < EndCycle Left' or 'StartCycle < EndCycle Right'
+    required: false
+  - name: baseCycles
+    dtype: int
+    shape:
+    - null
+    doc: PWM. The base set of spatial frequencies from which StartCycle and EndCycle
+      can be drawn.
+    required: false
+  - name: trialNum
+    dtype: int
+    doc: PWM. The trial number (not reliable, bugged).
+    required: false
+  - name: hitHistory
+    dtype: bool
+    doc: PWM. Boolean vector tracking whether the mouse got the trial correct or not.
+    required: false
+  - name: classHistory
+    dtype: int
+    shape:
+    - null
+    doc: PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was shown
+      to the mouse, with each value being a row index into stimulusTable.
+    required: false
+  - name: multibiasBeta
+    dtype: float
+    doc: PWM. Scalar value indicating the strength of the multibias.
+    required: false
+  - name: multibiasTau
+    dtype: float
+    doc: PWM. Scalar value indicating the history dependence of the multibias.
+    required: false
+  - name: pairNum
+    dtype: int
+    doc: PWM. Integer value indicating which stimulus pair was shown, is a row index
+      into stimulusTable.
+    required: false
+  - name: wallGuide
+    dtype: bool
+    doc: PWM. Boolean, whether wallGuides were active or not on this trial.
+    required: false
+  - name: alpha_plus
+    dtype: float
+    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
+      trigger forward.
+    required: false
+  - name: alpha_minus
+    dtype: float
+    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
+      trigger back.
+    required: false
+  - name: moonBeaconEnabled
+    dtype: bool
+    doc: PWM. Boolean, whether the moon beacon is enabled or not.
+    required: false
+  - name: moonBeaconPos
+    dtype: float
+    doc: PWM. Scalar [cm], current position of the moon beacon trigger relative to
+      the moonBeaconTrigger.
+    required: false
+  - name: moonBeaconTrigger
+    dtype: utf-8
+    doc: PWM. String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'.
+    required: false
+  - name: step_size
+    dtype: float
+    doc: PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each trial.
+    required: false
+  - name: lsrON
+    dtype: int
+    doc: pro/anti. whether the laser is on for a given trial, 0=laser off, 1=laser
+      on
+    required: false
+  - name: moonDistHint
+    dtype: float
+    doc: pro/anti. distance from start at which moon beacon appears
+    required: false
+  - name: forcedChoice
+    dtype: int
+    doc: spatfreq. whether a trial is a forced choice L-maze environment, 0=T-maze,
+      1=L-maze
+    required: false
