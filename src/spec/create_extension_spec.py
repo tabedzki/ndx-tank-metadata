@@ -1,12 +1,13 @@
 import os
 from pynwb.spec import NWBNamespaceBuilder, NWBGroupSpec, export_spec
 
+__version__ = '0.2.0'
 
 def main():
     ns_builder = NWBNamespaceBuilder(
         doc='type for storing metadata for Tank lab',
         name='ndx-tank-metadata',
-        version='0.2.0',
+        version=__version__,
         author=['Szonja Weigl', 'Luiz Tauffer', 'Ben Dichter', 'Christian Tabedzki'],
         contact=['ben.dichter@gmail.com', 'ct5868@princeton.edu']
     )
@@ -66,7 +67,8 @@ def main():
     LabMetaDataExtension.add_attribute(
         name='session_end_time',
         doc='Datetime when session ended',
-        dtype='text',  # temporary solution until datetime is fixed
+        # dtype='text',  # temporary solution until datetime is fixed
+        dtype='datetime',
     )
 
     LabMetaDataExtension.add_attribute(
