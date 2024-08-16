@@ -75,6 +75,18 @@ def main():
         dtype='int',
     )
 
+    LabMetaDataExtension.add_attribute(
+        name='timeElapsedFirstTrial',
+        doc='Lapsed time from starting session to initialization and appearance of world for first trial',
+        dtype='float',
+    )
+
+    LabMetaDataExtension.add_attribute(
+        name='timeElapsedVideoStart',
+        doc='Lapsed time between starting session and beginning of video acquisition; used for Sychronizing face video and Virmen streams',
+        dtype='float',
+    )
+
     RigExtension = NWBGroupSpec(
         doc='type for storing rig information',
         neurodata_type_def='RigExtension',
