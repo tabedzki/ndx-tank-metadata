@@ -21,73 +21,29 @@ def main():
         neurodata_type_inc='LabMetaData',
     )
 
-    LabMetaDataExtension.add_attribute(
-        name='experiment_name',
-        doc='name of experiment run',
-        dtype='text',
+    attributes = (
+        ('experiment_name', 'name of experiment run', 'text'),
+        ('world_file_name', 'name of world file run', 'text'),
+        ('protocol_name', 'name of protocol run', 'text'),
+        ('stimulus_bank_path', 'path of stimulus bank file', 'text'),
+        ('commit_id', 'Commit id for session run', 'text'),
+        ('location', 'Name of rig where session was run', 'text'),
+        ('session_performance', 'Performance of correct responses in %', 'float', False),
+        ('session_end_time', 'Datetime when session ended', 'datetime'),
+        ('num_trials', 'Number of trials during the session', 'int'),
+        ('timeElapsedFirstTrial', 'Lapsed time from starting session to initialization and appearance of world for first trial', 'float', False),
+        ('timeElapsedVideoStart', 'Lapsed time between starting session and beginning of video acquisition; used for Sychronizing face video and Virmen streams', 'float', False),
     )
 
-    LabMetaDataExtension.add_attribute(
-        name='world_file_name',
-        doc='name of world file run',
-        dtype='text',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='protocol_name',
-        doc='name of protocol run',
-        dtype='text',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='stimulus_bank_path',
-        doc='path of stimulus bank file',
-        dtype='text',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='commit_id',
-        doc='Commit id for session run',
-        dtype='text',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='location',
-        doc='Name of rig where session was run',
-        dtype='text',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='session_performance',
-        doc='Performance of correct responses in %',
-        dtype='float',
-        required=False
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='session_end_time',
-        doc='Datetime when session ended',
-        # dtype='text',  # temporary solution until datetime is fixed
-        dtype='datetime',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='num_trials',
-        doc='Number of trials during the session',
-        dtype='int',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='timeElapsedFirstTrial',
-        doc='Lapsed time from starting session to initialization and appearance of world for first trial',
-        dtype='float',
-    )
-
-    LabMetaDataExtension.add_attribute(
-        name='timeElapsedVideoStart',
-        doc='Lapsed time between starting session and beginning of video acquisition; used for Sychronizing face video and Virmen streams',
-        dtype='float',
-    )
+    for attribute in attributes:
+        name, doc, dtype = attribute[:3]
+        required = attribute[3] if len(attribute) > 3 else True
+        LabMetaDataExtension.add_attribute(
+            name=name,
+            doc=doc,
+            dtype=dtype,
+            required=required
+        )
 
     RigExtension = NWBGroupSpec(
         doc='type for storing rig information',
