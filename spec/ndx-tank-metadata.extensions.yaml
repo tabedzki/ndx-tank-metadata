@@ -26,7 +26,7 @@ groups:
     doc: Performance of correct responses in %
     required: false
   - name: session_end_time
-    dtype: datetime
+    dtype: text
     doc: Datetime when session ended
   - name: num_trials
     dtype: int
@@ -35,10 +35,12 @@ groups:
     dtype: float
     doc: Lapsed time from starting session to initialization and appearance of world
       for first trial
+    required: false
   - name: timeElapsedVideoStart
     dtype: float
     doc: Lapsed time between starting session and beginning of video acquisition;
       used for Sychronizing face video and Virmen streams
+    required: false
   groups:
   - name: rig
     neurodata_type_inc: RigExtension

@@ -15,6 +15,10 @@ conversion of Virmen metadata. The extension is built into the Tank lab conversi
 pipeline ([tank-lab-to-nwb](https://github.com/catalystneuro/tank-lab-to-nwb)) and is not necessary
 to be installed separately. Alternatively, it can be used from a python script as demonstrated below.
 
+## Modifying
+
+After making changes to `./src/spec/create_extension_spec.py`, make sure to run it. That creates the necessary `.yaml` files.
+
 ```python
 import os
 from pynwb import NWBFile, NWBHDF5IO
@@ -73,7 +77,7 @@ maze_dict = {'world': 1,
              'criteriaNTrials': 1,
              'warmupNTrials': [],
              'numSessions': 0,
-             'performance': 0, 
+             'performance': 0,
              'maxBias': 1,
              'warmupMaze': [],
              'warmupPerform': [],
@@ -102,7 +106,7 @@ lab_metadata_dict = dict(
     mazes=maze_extension
 )
 
-# Populate metadata extension 
+# Populate metadata extension
 lab_metadata = LabMetaDataExtension(**lab_metadata_dict)
 
 # Add to file
