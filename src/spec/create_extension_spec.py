@@ -1,55 +1,62 @@
 import os
-from pynwb.spec import NWBNamespaceBuilder, NWBGroupSpec, export_spec
 
-__version__ = '0.2.0'
+from pynwb.spec import NWBGroupSpec, NWBNamespaceBuilder, export_spec
+
+__version__ = "0.2.0"
+
 
 def main():
     ns_builder = NWBNamespaceBuilder(
-        doc='type for storing metadata for Tank lab',
-        name='ndx-tank-metadata',
+        doc="type for storing metadata for Tank lab",
+        name="ndx-tank-metadata",
         version=__version__,
-        author=['Szonja Weigl', 'Luiz Tauffer', 'Ben Dichter', 'Christian Tabedzki'],
-        contact=['ben.dichter@gmail.com', 'ct5868@princeton.edu']
+        author=["Szonja Weigl", "Luiz Tauffer", "Ben Dichter", "Christian Tabedzki"],
+        contact=["ben.dichter@gmail.com", "ct5868@princeton.edu"],
     )
 
-    ns_builder.include_type('LabMetaData', namespace='core')
-    ns_builder.include_type('DynamicTable', namespace='core')
+    ns_builder.include_type("LabMetaData", namespace="core")
+    ns_builder.include_type("DynamicTable", namespace="core")
 
     LabMetaDataExtension = NWBGroupSpec(
-        doc='type for storing metadata for Brody and Tank labs',
-        neurodata_type_def='LabMetaDataExtension',
-        neurodata_type_inc='LabMetaData',
+        doc="type for storing metadata for Brody and Tank labs",
+        neurodata_type_def="LabMetaDataExtension",
+        neurodata_type_inc="LabMetaData",
     )
 
     attributes = (
-        ('experiment_name', 'name of experiment run', 'text'),
-        ('world_file_name', 'name of world file run', 'text'),
-        ('protocol_name', 'name of protocol run', 'text'),
-        ('stimulus_bank_path', 'path of stimulus bank file', 'text'),
-        ('commit_id', 'Commit id for session run', 'text'),
-        ('location', 'Name of rig where session was run', 'text'),
-        ('session_performance', 'Performance of correct responses in %', 'float', False),
+        ("experiment_name", "name of experiment run", "text"),
+        ("world_file_name", "name of world file run", "text"),
+        ("protocol_name", "name of protocol run", "text"),
+        ("stimulus_bank_path", "path of stimulus bank file", "text"),
+        ("commit_id", "Commit id for session run", "text"),
+        ("location", "Name of rig where session was run", "text"),
+        ("session_performance", "Performance of correct responses in %", "float", False),
         # ('session_end_time', 'Datetime when session ended', 'datetime'),
-        ('session_end_time', 'Datetime when session ended', 'text'),
-        ('num_trials', 'Number of trials during the session', 'int'),
-        ('timeElapsedFirstTrial', 'Lapsed time from starting session to initialization and appearance of world for first trial', 'float', False),
-        ('timeElapsedVideoStart', 'Lapsed time between starting session and beginning of video acquisition; used for Sychronizing face video and Virmen streams', 'float', False),
+        ("session_end_time", "Datetime when session ended", "text"),
+        ("num_trials", "Number of trials during the session", "int"),
+        (
+            "timeElapsedFirstTrial",
+            "Lapsed time from starting session to initialization and appearance of world for first trial",
+            "float",
+            False,
+        ),
+        (
+            "timeElapsedVideoStart",
+            "Lapsed time between starting session and beginning of video acquisition; used for Sychronizing face video and Virmen streams",
+            "float",
+            False,
+        ),
     )
 
     for attribute in attributes:
         name, doc, dtype = attribute[:3]
         required = attribute[3] if len(attribute) > 3 else True
-        LabMetaDataExtension.add_attribute(
-            name=name,
-            doc=doc,
-            dtype=dtype,
-            required=required
-        )
+        LabMetaDataExtension.add_attribute(name=name, doc=doc, dtype=dtype, required=required)
 
     RigExtension = NWBGroupSpec(
-        doc='type for storing rig information',
-        neurodata_type_def='RigExtension',
-        neurodata_type_inc='LabMetaData',
+        doc="type for storing rig information",
+        neurodata_type_def="RigExtension",
+        neurodata_type_inc="LabMetaData",
     )
 
     rig_attr = [
@@ -79,89 +86,142 @@ def main():
         ("webcam_name", "text", "Webcam name"),
     ]
 
-
-    for (attr, datatype, description) in rig_attr:
-        if attr in ['sensorDotsPerRev', 'colorAdjustment', 'nidaqLines']:
-            RigExtension.add_attribute(
-                name=attr,
-                doc=description,
-                dtype=datatype,
-                shape=(None,),
-                required=False
-            )
+    for attr, datatype, description in rig_attr:
+        if attr in ["sensorDotsPerRev", "colorAdjustment", "nidaqLines"]:
+            RigExtension.add_attribute(name=attr, doc=description, dtype=datatype, shape=(None,), required=False)
         else:
-            RigExtension.add_attribute(
-                name=attr,
-                doc=description,
-                dtype=datatype,
-                required=False
-            )
-
+            RigExtension.add_attribute(name=attr, doc=description, dtype=datatype, required=False)
 
     LabMetaDataExtension.add_group(
-        name='rig',
-        neurodata_type_inc='RigExtension',
-        doc='type for storing rig information',
+        name="rig",
+        neurodata_type_inc="RigExtension",
+        doc="type for storing rig information",
     )
 
     LabMetaDataExtension.add_group(
-        name='mazes',
-        neurodata_type_inc='MazeExtension',
-        doc='type for storing maze information',
+        name="mazes",
+        neurodata_type_inc="MazeExtension",
+        doc="type for storing maze information",
     )
 
     MazeExtension = NWBGroupSpec(
-        doc='type for storing maze information',
-        neurodata_type_def='MazeExtension',
-        neurodata_type_inc='DynamicTable',
+        doc="type for storing maze information",
+        neurodata_type_def="MazeExtension",
+        neurodata_type_inc="DynamicTable",
     )
 
     maze_attr = [
-        ( "StartCycle",	"PWM and spatfreq. The spatial frequency of the first stimulus shown to the mouse.",	"int",),
-        ( "EndCycle",	"PWM. The spatial frequency of the second stimulus shown to the mouse.",	"int",),
-        ( "stimulusTable",	"PWM. Cell array containing the various (StartCycle,EndCycle) pairs that can be shown, their probabilities, their hitrates, the times they've been shown, etc.",	"object",), #array<object>
-        ( "rule",	"PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle < EndCycle Left' or 'StartCycle < EndCycle Right'",	"utf-8",),
-        ( "baseCycles",	"PWM. The base set of spatial frequencies from which StartCycle and EndCycle can be drawn.",	"int",), #"array<int>",
-        ( "trialNum",	"PWM. The trial number (not reliable, bugged).",	"int",),
-        ( "hitHistory",	"PWM. Boolean vector tracking whether the mouse got the trial correct or not.",	"bool",), #"array<bool>"
-        ( "classHistory",	"PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was shown to the mouse, with each value being a row index into stimulusTable.",	"int",), #array<int>
-        ( "multibiasBeta",	"PWM. Scalar value indicating the strength of the multibias.",	"float",),
-        ( "multibiasTau",	"PWM. Scalar value indicating the history dependence of the multibias.",	"float",),
-        ( "pairNum",	"PWM. Integer value indicating which stimulus pair was shown, is a row index into stimulusTable.",	"int",),
-        ( "wallGuide",	"PWM. Boolean, whether wallGuides were active or not on this trial.",	"bool",),
-        ( "alpha_plus",	"PWM. Scalar, how much to multiply step_size by when moving the moon beacon trigger forward.",	"float",),
-        ( "alpha_minus",	"PWM. Scalar, how much to multiply step_size by when moving the moon beacon trigger back.",	"float",),
-        ( "moonBeaconEnabled",	"PWM. Boolean, whether the moon beacon is enabled or not.",	"bool",),
-        ( "moonBeaconPos",	"PWM. Scalar [cm], current position of the moon beacon trigger relative to the moonBeaconTrigger.",	"float",),
-        ( "moonBeaconTrigger",	"PWM. String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'.",	"utf-8",),
-        ( "step_size",	"PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each trial.",	"float",),
-        ( "lsrON",	"pro/anti. whether the laser is on for a given trial, 0=laser off, 1=laser on",	"int",),
-        ( "moonDistHint",	"pro/anti. distance from start at which moon beacon appears",	"float",),
-        ( "forcedChoice",	"spatfreq. whether a trial is a forced choice L-maze environment, 0=T-maze, 1=L-maze",	"int",),
-
+        (
+            "StartCycle",
+            "PWM and spatfreq. The spatial frequency of the first stimulus shown to the mouse.",
+            "int",
+        ),
+        (
+            "EndCycle",
+            "PWM. The spatial frequency of the second stimulus shown to the mouse.",
+            "int",
+        ),
+        # ( "stimulusTable",	"PWM. Cell array containing the various (StartCycle,EndCycle) pairs that can be shown, their probabilities, their hitrates, the times they've been shown, etc.",	"object",), #array<object>
+        (
+            "rule",
+            "PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle < EndCycle Left' or 'StartCycle < EndCycle Right'",
+            "utf-8",
+        ),
+        (
+            "baseCycles",
+            "PWM. The base set of spatial frequencies from which StartCycle and EndCycle can be drawn.",
+            "int",
+        ),  # "array<int>",
+        (
+            "trialNum",
+            "PWM. The trial number (not reliable, bugged).",
+            "int",
+        ),
+        (
+            "hitHistory",
+            "PWM. Boolean vector tracking whether the mouse got the trial correct or not.",
+            "bool",
+        ),  # "array<bool>"
+        (
+            "classHistory",
+            "PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was shown to the mouse, with each value being a row index into stimulusTable.",
+            "int",
+        ),  # array<int>
+        (
+            "multibiasBeta",
+            "PWM. Scalar value indicating the strength of the multibias.",
+            "float",
+        ),
+        (
+            "multibiasTau",
+            "PWM. Scalar value indicating the history dependence of the multibias.",
+            "float",
+        ),
+        (
+            "pairNum",
+            "PWM. Integer value indicating which stimulus pair was shown, is a row index into stimulusTable.",
+            "int",
+        ),
+        (
+            "wallGuide",
+            "PWM. Boolean, whether wallGuides were active or not on this trial.",
+            "bool",
+        ),
+        (
+            "alpha_plus",
+            "PWM. Scalar, how much to multiply step_size by when moving the moon beacon trigger forward.",
+            "float",
+        ),
+        (
+            "alpha_minus",
+            "PWM. Scalar, how much to multiply step_size by when moving the moon beacon trigger back.",
+            "float",
+        ),
+        (
+            "moonBeaconEnabled",
+            "PWM. Boolean, whether the moon beacon is enabled or not.",
+            "bool",
+        ),
+        (
+            "moonBeaconPos",
+            "PWM. Scalar [cm], current position of the moon beacon trigger relative to the moonBeaconTrigger.",
+            "float",
+        ),
+        (
+            "moonBeaconTrigger",
+            "PWM. String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'.",
+            "utf-8",
+        ),
+        (
+            "step_size",
+            "PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each trial.",
+            "float",
+        ),
+        (
+            "lsrON",
+            "pro/anti. whether the laser is on for a given trial, 0=laser off, 1=laser on",
+            "int",
+        ),
+        (
+            "moonDistHint",
+            "pro/anti. distance from start at which moon beacon appears",
+            "float",
+        ),
+        (
+            "forcedChoice",
+            "spatfreq. whether a trial is a forced choice L-maze environment, 0=T-maze, 1=L-maze",
+            "int",
+        ),
     ]
 
-
-    for (attr, description, datatype) in maze_attr:
-        if attr in ['baseCycles', 'baseCycles', 'classHistory']:
-            MazeExtension.add_attribute(
-                name=attr,
-                doc=description,
-                dtype=datatype,
-                shape=(None,),
-                required=False
-            )
+    for attr, description, datatype in maze_attr:
+        if attr in ["baseCycles", "baseCycles", "classHistory"]:
+            MazeExtension.add_attribute(name=attr, doc=description, dtype=datatype, shape=(None,), required=False)
         else:
-            MazeExtension.add_attribute(
-                name=attr,
-                doc=description,
-                dtype=datatype,
-                required=False
-            )
-
+            MazeExtension.add_attribute(name=attr, doc=description, dtype=datatype, required=False)
 
     # export the extension to yaml files in the spec folder
-    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'spec'))
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))
     export_spec(ns_builder, [LabMetaDataExtension, RigExtension, MazeExtension], output_dir)
 
 

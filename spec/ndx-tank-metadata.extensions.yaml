@@ -167,12 +167,6 @@ groups:
     dtype: int
     doc: PWM. The spatial frequency of the second stimulus shown to the mouse.
     required: false
-  - name: stimulusTable
-    dtype: object
-    doc: PWM. Cell array containing the various (StartCycle,EndCycle) pairs that can
-      be shown, their probabilities, their hitrates, the times they've been shown,
-      etc.
-    required: false
   - name: rule
     dtype: utf-8
     doc: PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle
