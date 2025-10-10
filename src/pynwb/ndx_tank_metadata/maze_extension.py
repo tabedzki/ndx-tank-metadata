@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from hdmf.utils import docval, get_docval
 
@@ -13,7 +14,8 @@ except ImportError:
 
 name = "ndx-tank-metadata"
 
-spec_path = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+# spec_path = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+spec_path = Path(os.path.dirname(__file__)).absolute()
 ns_path = os.path.join(spec_path, "spec", f"{name}.namespace.yaml")
 
 load_namespaces(ns_path)

@@ -1,0 +1,18 @@
+namespaces:
+- author:
+  - Szonja Weigl
+  - Luiz Tauffer
+  - Ben Dichter
+  - Christian Tabedzki
+  contact:
+  - ben.dichter@gmail.com
+  - ct5868@princeton.edu
+  doc: type for storing metadata for Tank lab
+  name: ndx-tank-metadata
+  schema:
+  - namespace: core
+    neurodata_types:
+    - LabMetaData
+    - DynamicTable
+  - source: ndx-tank-metadata.extensions.yaml
+  version: 0.2.0
