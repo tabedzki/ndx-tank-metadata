@@ -26,20 +26,20 @@ groups:
     doc: Performance of correct responses in %
     required: false
   - name: session_end_time
-    dtype: text
+    dtype: datetime
     doc: Datetime when session ended
   - name: num_trials
     dtype: int
     doc: Number of trials during the session
   - name: timeElapsedFirstTrial
     dtype: float
-    doc: Lapsed time from starting session to initialization and appearance of world
-      for first trial
+    doc: Lapsed time from starting session to initialization and appearance of 
+      world for first trial
     required: false
   - name: timeElapsedVideoStart
     dtype: float
-    doc: Lapsed time between starting session and beginning of video acquisition;
-      used for Sychronizing face video and Virmen streams
+    doc: Lapsed time between starting session and beginning of video 
+      acquisition; used for Sychronizing face video and Virmen streams
     required: false
   groups:
   - name: rig
@@ -66,7 +66,8 @@ groups:
     required: false
   - name: hasSyncComm
     dtype: int
-    doc: true if digital communications should be used for synchronization (ScanImage)
+    doc: true if digital communications should be used for synchronization 
+      (ScanImage)
     required: false
   - name: minIterationDT
     dtype: float
@@ -80,7 +81,8 @@ groups:
     dtype: float
     shape:
     - null
-    doc: Sensor dots per ball revolution, obtained using the calibrateBall script
+    doc: Sensor dots per ball revolution, obtained using the calibrateBall 
+      script
     required: false
   - name: ballCircumference
     dtype: float
@@ -160,8 +162,8 @@ groups:
   attributes:
   - name: StartCycle
     dtype: int
-    doc: PWM and spatfreq. The spatial frequency of the first stimulus shown to the
-      mouse.
+    doc: PWM and spatfreq. The spatial frequency of the first stimulus shown to 
+      the mouse.
     required: false
   - name: EndCycle
     dtype: int
@@ -169,15 +171,15 @@ groups:
     required: false
   - name: rule
     dtype: utf-8
-    doc: PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle
-      < EndCycle Left' or 'StartCycle < EndCycle Right'
+    doc: PWM. Specifies what the mouse should do to receive reward. Can be 
+      'StartCycle < EndCycle Left' or 'StartCycle < EndCycle Right'
     required: false
   - name: baseCycles
     dtype: int
     shape:
     - null
-    doc: PWM. The base set of spatial frequencies from which StartCycle and EndCycle
-      can be drawn.
+    doc: PWM. The base set of spatial frequencies from which StartCycle and 
+      EndCycle can be drawn.
     required: false
   - name: trialNum
     dtype: int
@@ -185,14 +187,15 @@ groups:
     required: false
   - name: hitHistory
     dtype: bool
-    doc: PWM. Boolean vector tracking whether the mouse got the trial correct or not.
+    doc: PWM. Boolean vector tracking whether the mouse got the trial correct or
+      not.
     required: false
   - name: classHistory
     dtype: int
     shape:
     - null
-    doc: PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was shown
-      to the mouse, with each value being a row index into stimulusTable.
+    doc: PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was 
+      shown to the mouse, with each value being a row index into stimulusTable.
     required: false
   - name: multibiasBeta
     dtype: float
@@ -204,8 +207,8 @@ groups:
     required: false
   - name: pairNum
     dtype: int
-    doc: PWM. Integer value indicating which stimulus pair was shown, is a row index
-      into stimulusTable.
+    doc: PWM. Integer value indicating which stimulus pair was shown, is a row 
+      index into stimulusTable.
     required: false
   - name: wallGuide
     dtype: bool
@@ -213,13 +216,13 @@ groups:
     required: false
   - name: alpha_plus
     dtype: float
-    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
-      trigger forward.
+    doc: PWM. Scalar, how much to multiply step_size by when moving the moon 
+      beacon trigger forward.
     required: false
   - name: alpha_minus
     dtype: float
-    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
-      trigger back.
+    doc: PWM. Scalar, how much to multiply step_size by when moving the moon 
+      beacon trigger back.
     required: false
   - name: moonBeaconEnabled
     dtype: bool
@@ -227,21 +230,23 @@ groups:
     required: false
   - name: moonBeaconPos
     dtype: float
-    doc: PWM. Scalar [cm], current position of the moon beacon trigger relative to
-      the moonBeaconTrigger.
+    doc: PWM. Scalar [cm], current position of the moon beacon trigger relative 
+      to the moonBeaconTrigger.
     required: false
   - name: moonBeaconTrigger
     dtype: utf-8
-    doc: PWM. String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'.
+    doc: PWM. String indicating the trigger point for the moon. Can be 'Sa' or 
+      'Sb'.
     required: false
   - name: step_size
     dtype: float
-    doc: PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each trial.
+    doc: PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each
+      trial.
     required: false
   - name: lsrON
     dtype: int
-    doc: pro/anti. whether the laser is on for a given trial, 0=laser off, 1=laser
-      on
+    doc: pro/anti. whether the laser is on for a given trial, 0=laser off, 
+      1=laser on
     required: false
   - name: moonDistHint
     dtype: float
@@ -249,6 +254,6 @@ groups:
     required: false
   - name: forcedChoice
     dtype: int
-    doc: spatfreq. whether a trial is a forced choice L-maze environment, 0=T-maze,
-      1=L-maze
+    doc: spatfreq. whether a trial is a forced choice L-maze environment, 
+      0=T-maze, 1=L-maze
     required: false

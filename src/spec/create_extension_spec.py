@@ -31,8 +31,8 @@ def main():
         ("commit_id", "Commit id for session run", "text"),
         ("location", "Name of rig where session was run", "text"),
         ("session_performance", "Performance of correct responses in %", "float", False),
-        # ('session_end_time', 'Datetime when session ended', 'datetime'),
-        ("session_end_time", "Datetime when session ended", "text"),
+        ("session_end_time", "Datetime when session ended", "datetime"),
+        # ("session_end_time", "Datetime when session ended", "text"),
         ("num_trials", "Number of trials during the session", "int"),
         (
             "timeElapsedFirstTrial",
