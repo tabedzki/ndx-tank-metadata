@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# The root spec/ is the only source; wheel builds remap it into the package.
+/src/pynwb/ndx_tank_metadata/spec/

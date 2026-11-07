@@ -1,0 +1,3904 @@
+# ViRMEn log fields and where they go in NWB. See registry.py; the spec is generated from this file.
+fields:
+- path: derived.session_performance
+  destination: lab_meta_attribute
+  name: "session_performance"
+  dtype: float64
+  shape: []
+  unit: "%"
+  in_spec: true
+  description: "Percentage of correct responses, computed by the converter."
+- path: derived.stimulus_pairs.block
+  destination: stimulus_pairs_column
+  name: "block"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Block (1-based) in which this set of pairs applied: the pair set can change between blocks."
+- path: derived.trial.stimulus_pair
+  destination: trial_column
+  name: "stimulus_pair"
+  dtype: region
+  shape: []
+  in_spec: true
+  description: "Row of StimulusPairs shown on this trial."
+  notes: "Built from pairNum and the trial's block."
+- path: log.animal
+  destination: structural
+  description: "Trainee (animal) struct."
+- path: log.animal.Date
+  destination: drop
+  description: "Date (datevec) associated with trainee record."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.EnableLiveStats
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.Profile
+  destination: drop
+  description: "Training schedule profile index."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.Time
+  destination: drop
+  description: "Scheduled training time (hour)"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.autoAdvance
+  destination: animal_attribute
+  name: "autoAdvance"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the animal is automatically advanced through levels."
+- path: log.animal.behaviorVideo
+  destination: animal_attribute
+  name: "behaviorVideo"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Index into the training GUI's list of behavior video presets."
+- path: log.animal.color
+  destination: drop
+  description: "GUI display colour for the animal."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.day
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.db_connected
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.experiment
+  destination: lab_meta_attribute
+  name: "experiment"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Path of the ViRMEn experiment world file."
+- path: log.animal.imagingTags
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.animal.isActive
+  destination: drop
+  description: "Whether the animal is active in the training roster."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.mainDrawMethod
+  destination: structural
+  description: "{method, parameter} cell for drawing main trials; its members have their own entries."
+- path: log.animal.mainDrawMethod.method
+  destination: animal_attribute
+  name: "mainDrawMethod"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Method for drawing main trials, for example TRIAL_DRAWING."
+- path: log.animal.mainDrawMethod.parameter
+  destination: animal_attribute
+  name: "mainDrawMethodParameter"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Parameter of the method for drawing main trials."
+- path: log.animal.mainMazeID
+  destination: animal_attribute
+  name: "mainMazeID"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Current main maze (training level) for the animal."
+- path: log.animal.manipulationType
+  destination: animal_attribute
+  name: "manipulationType"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Manipulation type ('none', 'optogenetics', ...)"
+- path: log.animal.motionBlurRange
+  destination: animal_attribute
+  name: "motionBlurRange"
+  dtype: float64
+  shape: [2]
+  transform: empty_to_missing
+  in_spec: true
+  description: "Motion-blur range applied to cues."
+- path: log.animal.motorBias
+  destination: animal_attribute
+  name: "motorBias"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether motor-bias correction is applied."
+- path: log.animal.name
+  destination: subject
+  name: "subject_id"
+  dtype: text
+  shape: []
+  description: "Name of subject."
+- path: log.animal.newTrainingGUI
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.num_mazes
+  destination: settings
+  name: "animal.num_mazes"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.overrideMazeID
+  destination: settings
+  name: "animal.overrideMazeID"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.overrideSubMazeID
+  destination: settings
+  name: "animal.overrideSubMazeID"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.posttraining_instructions
+  destination: settings
+  name: "animal.posttraining_instructions"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pretraining_instructions
+  destination: settings
+  name: "animal.pretraining_instructions"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.protocol
+  destination: lab_meta_attribute
+  name: "protocol_name"
+  dtype: text
+  shape: []
+  transform: function_name
+  required: true
+  in_spec: true
+  description: "Name of protocol run."
+- path: log.animal.pulseDelayStim
+  destination: animal_attribute
+  name: "pulseDelayStim"
+  dtype: float64
+  shape: [2]
+  transform: pad_pair
+  in_spec: true
+  description: "Stimulation pulse as [delay, width]."
+  notes: "Two logs hold only the delay as a scalar, stored as [delay, NaN]."
+- path: log.animal.pupillometryVideo
+  destination: animal_attribute
+  name: "pupillometryVideo"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Index into the training GUI's list of pupillometry video presets."
+  notes: "source: TrainingRegiment.m:2329 (pupillometry_video_list)."
+- path: log.animal.pupillometry_video_acq_struct
+  destination: structural
+  description: "Pupillometry video acquisition settings."
+- path: log.animal.pupillometry_video_acq_struct.local_video_name
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.local_video_name"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pupillometry_video_acq_struct.remote_video_name
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.remote_video_name"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pupillometry_video_acq_struct.video_acquisition_rate
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.video_acquisition_rate"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pupillometry_video_acq_struct.video_ext
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.video_ext"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pupillometry_video_acq_struct.video_gain
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.video_gain"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.pupillometry_video_acq_struct.video_parent_path
+  destination: settings
+  name: "animal.pupillometry_video_acq_struct.video_parent_path"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.refImageFiles
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.animal.restart_session_paradigm
+  destination: drop
+  description: "How a restarted session is handled ('APPEND SESSION' / 'START NEW SESSION')"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.rewardFactor
+  destination: animal_attribute
+  name: "rewardFactor"
+  dtype: float64
+  shape: [2, null]
+  in_spec: true
+  description: "Reward multiplier table, with one column per level."
+- path: log.animal.sessionIndex
+  destination: drop
+  description: "Index of session to log to."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.session_struct
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.session_struct.session_date
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.session_struct.session_number
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.session_struct.subject_fullname
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.animal.softwareParams
+  destination: structural
+  description: "Software parameter set: a struct when one is set. '' and the GUI default 1 both mean none is set (TrainingRegiment.m:2408)."
+- path: log.animal.softwareParams.software_parameter_description
+  destination: settings
+  name: "animal.softwareParams.software_parameter_description"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.softwareParams.software_parameter_hash
+  destination: settings
+  name: "animal.softwareParams.software_parameter_hash"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.softwareParams.software_parameter_set_id
+  destination: settings
+  name: "animal.softwareParams.software_parameter_set_id"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.softwareParams.software_parameters
+  destination: structural
+  description: "Software parameters of the set."
+- path: log.animal.softwareParams.software_parameters.lsrepoch
+  destination: settings
+  name: "animal.softwareParams.software_parameters.lsrepoch"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.softwareParams.software_parameters.stimulation_sequence
+  destination: settings
+  name: "animal.softwareParams.software_parameters.stimulation_sequence"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol
+  destination: structural
+  description: "Optogenetic stimulation protocol: a struct when one is set. '' and the GUI default 1 both mean none is set (TrainingRegiment.m:2394)."
+- path: log.animal.stimulationProtocol.optogenetic_protocol_id
+  destination: settings
+  name: "animal.stimulationProtocol.optogenetic_protocol_id"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.protocol_description
+  destination: settings
+  name: "animal.stimulationProtocol.protocol_description"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_frequency
+  destination: settings
+  name: "animal.stimulationProtocol.stim_frequency"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_parameter_description
+  destination: settings
+  name: "animal.stimulationProtocol.stim_parameter_description"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_parameter_set_id
+  destination: settings
+  name: "animal.stimulationProtocol.stim_parameter_set_id"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_power
+  destination: settings
+  name: "animal.stimulationProtocol.stim_power"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_pulse_width
+  destination: settings
+  name: "animal.stimulationProtocol.stim_pulse_width"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.stim_wavelength
+  destination: settings
+  name: "animal.stimulationProtocol.stim_wavelength"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulationProtocol.waveform_id
+  destination: settings
+  name: "animal.stimulationProtocol.waveform_id"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.stimulusBank
+  destination: lab_meta_attribute
+  name: "stimulus_bank_path"
+  dtype: text
+  shape: []
+  transform: empty_to_missing
+  in_spec: true
+  description: "Path of the stimulus bank file; left out when the session has none."
+- path: log.animal.stimulusSet
+  destination: lab_meta_attribute
+  name: "stimulusSet"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Index of stimulus set within the bank."
+- path: log.animal.subtask
+  destination: animal_attribute
+  name: "subtask"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Sub-task label."
+- path: log.animal.user_id
+  destination: settings
+  name: "animal.user_id"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.animal.virmenDisplacementPerCm
+  destination: animal_attribute
+  name: "virmenDisplacementPerCm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "VR displacement gain per cm of ball motion."
+- path: log.animal.virmenRotationsPerRev
+  destination: animal_attribute
+  name: "virmenRotationsPerRev"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "View-angle scale factor (NaN default)"
+- path: log.animal.virmenSensor
+  destination: lab_meta_attribute
+  name: "virmenSensor"
+  dtype: text
+  shape: []
+  transform: enum_name
+  in_spec: true
+  description: "Rule that maps ball motion to VR motion (MovementSensor enum)."
+  codes:
+    "BottomVelocity": "bottom sensor, velocity"
+    "BottomPosition": "bottom sensor, position"
+    "FrontVelocity": "front sensor, velocity"
+    "ViewAngleLocked": "view angle locked"
+- path: log.animal.warmupDrawMethod
+  destination: structural
+  description: "{method, parameter} cell for drawing warmup trials; its members have their own entries."
+- path: log.animal.warmupDrawMethod.method
+  destination: animal_attribute
+  name: "warmupDrawMethod"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Method for drawing warmup trials, for example TRIAL_DRAWING."
+- path: log.animal.warmupDrawMethod.parameter
+  destination: animal_attribute
+  name: "warmupDrawMethodParameter"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Parameter of the method for drawing warmup trials."
+- path: log.animal.waterAlloc
+  destination: animal_attribute
+  name: "waterAlloc"
+  dtype: float64
+  shape: []
+  unit: "mL"
+  in_spec: true
+  description: "Daily water allocation."
+- path: log.animal.writeSession
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block
+  destination: structural
+  description: "Blocks of trials with a common maze configuration."
+- path: log.block.P_on
+  destination: epoch_column
+  name: "P_on"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "probability of a trial being a laser on trial."
+- path: log.block.context
+  destination: epoch_column
+  name: "context"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Pro/anti context of the block."
+  codes:
+    1: "Pro"
+    2: "Anti"
+    3: "probe maze"
+  notes: "The field sheet lists 1 and 2; the Pro/Anti experiment code also sets 3 on probe trials."
+- path: log.block.delayDuration
+  destination: epoch_column
+  name: "delayDuration"
+  dtype: float64
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Delay duration."
+- path: log.block.doorstopStatus
+  destination: epoch_column
+  name: "doorstopStatus"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Doorstop condition of the block."
+  codes:
+    0: "no doorstop"
+    1: "visible doorstop"
+    2: "invisible doorstop"
+- path: log.block.doorstopVelThresh1
+  destination: epoch_column
+  name: "doorstopVelThresh1"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Delay period entry velocity threshold."
+- path: log.block.doorstopVelThresh2
+  destination: epoch_column
+  name: "doorstopVelThresh2"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Delay period entry velocity threshold."
+- path: log.block.duration
+  destination: epoch_column
+  name: "duration"
+  dtype: float64
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Duration of the block."
+- path: log.block.easyBlockFlag
+  destination: epoch_column
+  name: "easyBlockFlag"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "1 if block was flagged as easy (maze_id < main_maze_id)"
+- path: log.block.firstTrial
+  destination: epoch_column
+  name: "firstTrial"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "First trial run in block."
+- path: log.block.frozenStimuli
+  destination: epoch_column
+  name: "frozenStimuli"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "True if a custom (frozen) stimulus bank is used."
+- path: log.block.isLinear
+  destination: epoch_column
+  name: "isLinear"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Enforce linear task or alternation."
+  codes:
+    0: "alternation"
+    1: "linear"
+- path: log.block.iterStr
+  destination: drop
+  description: "Integer class used to store iteration indices (e.g. 'uint16')"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block.lsrepoch
+  destination: epoch_column
+  name: "lsrepoch"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "which task epochs the laser can be on in."
+- path: log.block.mainMazeID
+  destination: epoch_column
+  name: "mainMazeID"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Number of maze of \"highest\" level for subject."
+- path: log.block.mazeID
+  destination: epoch_column
+  name: "mazeID"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Number of maze run in block."
+- path: log.block.motionBlurRange
+  destination: drop
+  description: "Motion blur range in effect."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block.rewardMiL
+  destination: epoch_column
+  name: "rewardMiL"
+  dtype: float64
+  shape: []
+  unit: "mL"
+  in_spec: true
+  description: "Reward delivered during the block."
+- path: log.block.shapingProtocol
+  destination: epoch_column
+  name: "shapingProtocol"
+  dtype: text
+  shape: []
+  transform: function_name
+  in_spec: true
+  description: "Shaping protocol function handle."
+- path: log.block.stage
+  destination: epoch_column
+  name: "stage"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "variable tracking pro/anti training stage, since mazeID is used to handle context switching."
+- path: log.block.start
+  destination: epoch_column
+  name: "wall_clock_start"
+  dtype: float64
+  shape: []
+  unit: "s"
+  transform: seconds_from_session_start
+  in_spec: true
+  description: "Wall-clock time ViRMEn stamped on this block, in seconds since session_start_time. The block's start_time is on the session clock and can differ from this stamp: a block stamped during setup predates the elapsed clock."
+  notes: "start_time and stop_time come from the elapsed clock through derived.clock_offset; see the clock_anchor settings row."
+- path: log.block.stimRegime
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.block.stimType
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.block.stimulusBank
+  destination: epoch_column
+  name: "stimulusBank"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Path to stimulus bank file used."
+- path: log.block.stimulusCommit
+  destination: drop
+  description: "Commit/ID of stimulus bank (0 if generated)"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block.stimulusConfig
+  destination: epoch_column
+  name: "stimulusConfig"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Index of stimulus configuration in the PoissonStimulusTrain bank."
+- path: log.block.stimulusSet
+  destination: epoch_column
+  name: "stimulusSet"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Stimulus set index."
+- path: log.block.sublevel
+  destination: epoch_column
+  name: "sublevel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Sub-level within maze (LSTT gradual param change)"
+- path: log.block.trial
+  destination: structural
+  description: "Per-trial records of the block."
+- path: log.block.trial.CS
+  destination: structural
+  description: "Conditioned stimulus of the trial (ConditionedStimulus object); its properties have their own entries."
+- path: log.block.trial.CS.isRewarded
+  destination: trial_column
+  name: "CS_isRewarded"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the conditioned stimulus is rewarded."
+- path: log.block.trial.CS.modality
+  destination: trial_column
+  name: "CS_modality"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Sensory modality of the conditioned stimulus."
+  codes:
+    "visual": "visual"
+    "tactile": "tactile"
+    "none": "no stimulus presented"
+- path: log.block.trial.CS.position
+  destination: trial_column
+  name: "CS_position"
+  dtype: float64
+  shape: [null]
+  unit: "cm"
+  in_spec: true
+  description: "Positions of the conditioned stimulus along the track."
+- path: log.block.trial.CS.presented
+  destination: trial_column
+  name: "CS_presented"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the conditioned stimulus was presented."
+- path: log.block.trial.CS.side
+  destination: trial_column
+  name: "CS_side"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Side of the conditioned stimulus."
+  codes:
+    "L": "left"
+    "R": "right"
+    "none": "no stimulus presented"
+- path: log.block.trial.EndCycle
+  destination: trial_column
+  name: "EndCycle"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "The spatial frequency of the second stimulus shown to the mouse."
+- path: log.block.trial.LaserTrialType
+  destination: trial_column
+  name: "LaserTrialType"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Laser epoch type of the trial."
+  codes:
+    0: "default"
+    1: "laser during cue"
+    2: "laser during outcome"
+  notes: "Set by the laser-task experiment code; values above 2 are not used there."
+- path: log.block.trial.P_clamp
+  destination: trial_column
+  name: "P_clamp"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Probability of a viewangle-clamp trial -- defaults to 20."
+- path: log.block.trial.StartCycle
+  destination: trial_column
+  name: "StartCycle"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "The spatial frequency of the first stimulus shown to the mouse."
+- path: log.block.trial.TTL_stamp
+  destination: trial_column
+  name: "TTL_stamp"
+  dtype: float32
+  shape: [null]
+  unit: "s"
+  in_spec: true
+  description: "TTL times sent during the trial, on the elapsed-time clock."
+- path: log.block.trial.alpha_minus
+  destination: trial_column
+  name: "alpha_minus"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Scalar, how much to multiply step_size by when moving the moon beacon trigger back."
+- path: log.block.trial.alpha_plus
+  destination: trial_column
+  name: "alpha_plus"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Scalar, how much to multiply step_size by when moving the moon beacon trigger forward."
+- path: log.block.trial.baseCycles
+  destination: trial_column
+  name: "baseCycles"
+  dtype: int32
+  shape: [null]
+  in_spec: true
+  description: "The base set of spatial frequencies from which StartCycle and EndCycle can be drawn."
+- path: log.block.trial.choice
+  destination: trial_column
+  name: "choice"
+  dtype: text
+  shape: []
+  transform: enum_name
+  in_spec: true
+  description: "Choice the animal made in the trial."
+  codes:
+    "L": "left"
+    "R": "right"
+    "nil": "no choice (trial violation)"
+  notes: "28 trials of one session log a raw 1 or 2 instead of the enum; map 1 to L and 2 to R. Always nil in the Pavlovian task, which runs on autopilot."
+- path: log.block.trial.classHistory
+  destination: drop
+  description: "Vector tracking which (StartCycle,EndCycle) stimulus pair was shown to the mouse, with each value being a row index into stimulusTable."
+  notes: "Cumulative copy of pairNum over the session; exactly derivable in all 645 surveyed trials."
+- path: log.block.trial.collision
+  destination: timeseries
+  name: "Collision"
+  dtype: bool
+  shape: [null]
+  description: "boolean vector fo each frame 1= collision detected."
+  notes: "One value per position row."
+- path: log.block.trial.comment
+  destination: drop
+  description: "User comment attached to trial."
+  notes: "Empty in all 8,616 surveyed trials."
+- path: log.block.trial.counter_licks
+  destination: trial_column
+  name: "counter_licks"
+  dtype: int32
+  shape: [null]
+  transform: licks
+  in_spec: true
+  description: "Lick counter readings: the iteration of each reading, and the new lick count."
+  notes: "All-NaN 2x1 in the 427 surveyed trials, which the licks transform stores as no licks."
+- path: log.block.trial.cueCombo
+  destination: trial_column
+  name: "cueCombo"
+  dtype: bool
+  shape: [null]
+  transform: left_right
+  in_spec: true
+  description: "Whether each cue slot holds a cue on the left and on the right."
+- path: log.block.trial.cueOffset
+  destination: trial_column
+  name: "cueOffset"
+  dtype: int32
+  shape: [null]
+  unit: "iterations"
+  transform: left_right
+  in_spec: true
+  description: "Iteration # when cues disappeared in trial."
+- path: log.block.trial.cueOnset
+  destination: trial_column
+  name: "cueOnset"
+  dtype: int32
+  shape: [null]
+  unit: "iterations"
+  transform: left_right
+  in_spec: true
+  description: "Iteration # when cues appeared in trial."
+- path: log.block.trial.cuePos
+  destination: trial_column
+  name: "cuePos"
+  dtype: float32
+  shape: [null]
+  unit: "cm"
+  transform: left_right
+  in_spec: true
+  description: "Position in maze for each cue."
+- path: log.block.trial.currentSetpoint
+  destination: trial_column
+  name: "currentSetpoint"
+  dtype: float32
+  shape: []
+  unit: "A"
+  in_spec: true
+  description: "Current setpoint of the trial."
+- path: log.block.trial.doorstopAttempts
+  destination: trial_column
+  name: "doorstopAttempts"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.doorstopDecelDuration
+  destination: trial_column
+  name: "doorstopDecelDuration"
+  dtype: float32
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.duration
+  destination: trial_column
+  name: "duration"
+  dtype: float32
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Duration in seconds of entire trial."
+- path: log.block.trial.excessTravel
+  destination: trial_column
+  name: "excessTravel"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "parameter that measures extra distance run by subject."
+- path: log.block.trial.finalchoice
+  destination: trial_column
+  name: "finalchoice"
+  dtype: text
+  shape: []
+  transform: enum_name
+  in_spec: true
+  description: "Final choice in the trial, for example after retries."
+  codes:
+    "L": "left"
+    "R": "right"
+    "nil": "no choice"
+- path: log.block.trial.forcedChoice
+  destination: trial_column
+  name: "forcedChoice"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether a trial is a forced choice L-maze environment, 0=T-maze, 1=L-maze."
+  codes:
+    0: "T-maze"
+    1: "L-maze (forced choice)"
+- path: log.block.trial.forced_automatic_reward
+  destination: trial_column
+  name: "forced_automatic_reward"
+  dtype: bool
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.frictionEngagedVec
+  destination: timeseries
+  name: "FrictionEngaged"
+  dtype: bool
+  shape: [null]
+  description: "Per-iteration flag that sticky-wall friction was engaged."
+  notes: "One value per position row."
+- path: log.block.trial.hitHistory
+  destination: drop
+  description: "Boolean vector tracking whether the mouse got the trial correct or not."
+  notes: "Cumulative copy of choice == trialType over the session; exactly derivable in all 645 surveyed trials."
+- path: log.block.trial.iArmEntry
+  destination: trial_column
+  name: "iArmEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration # when subject entered arm region."
+- path: log.block.trial.iBlank
+  destination: trial_column
+  name: "iBlank"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration # when screen is turned off."
+- path: log.block.trial.iChoice
+  destination: trial_column
+  name: "iChoice"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration of choice onset."
+- path: log.block.trial.iChoiceEntry
+  destination: trial_column
+  name: "iChoiceEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration of entry into choice region."
+- path: log.block.trial.iCueEntry
+  destination: trial_column
+  name: "iCueEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration # when subject entered cue region."
+- path: log.block.trial.iDoorstopDelayEnd
+  destination: trial_column
+  name: "iDoorstopDelayEnd"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Per-attempt vector, trimmed separately from the other doorstop vectors, so do not pair them by element."
+- path: log.block.trial.iDoorstopDelayStart
+  destination: trial_column
+  name: "iDoorstopDelayStart"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Per-attempt vector, trimmed separately from the other doorstop vectors, so do not pair them by element."
+- path: log.block.trial.iDoorstopEntry
+  destination: trial_column
+  name: "iDoorstopEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.iDoorstopRetry
+  destination: trial_column
+  name: "iDoorstopRetry"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Per-attempt vector, trimmed separately from the other doorstop vectors, so do not pair them by element."
+- path: log.block.trial.iLaserOff
+  destination: trial_column
+  name: "iLaserOff"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "Laser command offset frame: the iteration of the command transition, not delivered light; 0 if none."
+- path: log.block.trial.iLaserOn
+  destination: trial_column
+  name: "iLaserOn"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "Laser command onset frame: the iteration of the command transition, not delivered light; 0 if none."
+- path: log.block.trial.iMemEntry
+  destination: trial_column
+  name: "iMemEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration # when subject entered memory region."
+- path: log.block.trial.iOutcome
+  destination: trial_column
+  name: "iOutcome"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "Iteration of outcome onset."
+- path: log.block.trial.iStartEntry
+  destination: trial_column
+  name: "iStartEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration when trial started / subject entered start region."
+- path: log.block.trial.iTurnEntry
+  destination: trial_column
+  name: "iTurnEntry"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "iteration # when subject entered turn region."
+- path: log.block.trial.isClampTrial
+  destination: trial_column
+  name: "isClampTrial"
+  dtype: bool
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.iterations
+  destination: trial_column
+  name: "iterations"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "# of iterations (frames) for entire trial."
+- path: log.block.trial.landmarkOnset
+  destination: trial_column
+  name: "landmarkOnset"
+  dtype: int32
+  shape: [null, null]
+  unit: "iterations"
+  in_spec: true
+  description: "Iterations of landmark onset: one vector per landmark type (doorstop task)."
+- path: log.block.trial.laserAttempt
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.block.trial.licks
+  destination: trial_column
+  name: "licks"
+  dtype: int32
+  shape: [null]
+  transform: licks
+  in_spec: true
+  description: "Licks in the trial: the iteration of each lick, and its lick port or count value."
+  notes: "A 2xN all-NaN array means no licks. Doorstop task: a preallocated 60000xM all-NaN array that doorstop_track.m resets each trial and nothing fills, so it is dropped; conversion fails if a doorstop session ever holds non-NaN values."
+- path: log.block.trial.lsrON
+  destination: trial_column
+  name: "lsrON"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether the laser is on for a given trial, 0=laser off, 1=laser on."
+  codes:
+    0: "laser off"
+    1: "laser on"
+- path: log.block.trial.measuredVoltage
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.block.trial.modalityRule
+  destination: trial_column
+  name: "modalityRule"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "=1, Tactile Rule; =2, Visual; =0, both modalities rewarded/CS+."
+  codes:
+    0: "both modalities rewarded"
+    1: "tactile rule"
+    2: "visual rule"
+- path: log.block.trial.moonBeaconEnabled
+  destination: trial_column
+  name: "moonBeaconEnabled"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Boolean, whether the moon beacon is enabled or not."
+- path: log.block.trial.moonBeaconPos
+  destination: trial_column
+  name: "moonBeaconPos"
+  dtype: float32
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Scalar [cm], current position of the moon beacon trigger relative to the moonBeaconTrigger."
+- path: log.block.trial.moonBeaconShown
+  destination: trial_column
+  name: "moonBeaconShown"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the moon beacon has been shown in this trial."
+- path: log.block.trial.moonBeaconTrigger
+  destination: trial_column
+  name: "moonBeaconTrigger"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'."
+  codes:
+    "Sa": "first stimulus"
+    "Sb": "second stimulus"
+- path: log.block.trial.moonDistHint
+  destination: trial_column
+  name: "moonDistHint"
+  dtype: float32
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Distance from start at which moon beacon appears."
+- path: log.block.trial.multibiasBeta
+  destination: trial_column
+  name: "multibiasBeta"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Scalar value indicating the strength of the multibias."
+- path: log.block.trial.multibiasTau
+  destination: trial_column
+  name: "multibiasTau"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Scalar value indicating the history dependence of the multibias."
+- path: log.block.trial.pDistractorTrials
+  destination: trial_column
+  name: "pDistractorTrials"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "proportion of trials including distractor cues (tactile: towers, visual: puffs)"
+- path: log.block.trial.pairNum
+  destination: trial_column
+  name: "pairNum"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Integer value indicating which stimulus pair was shown, is a row index into stimulusTable."
+- path: log.block.trial.position
+  destination: timeseries
+  name: "Position"
+  dtype: float32
+  shape: [null, 3]
+  description: "position."
+  notes: "Columns 0-1: position as a SpatialSeries, in cm. Column 2: view angle as its own TimeSeries, in rad; it is unwrapped, so it can run far past 2*pi, which a radian SpatialSeries may not, and it integrates velocity[:, 2]."
+- path: log.block.trial.probeTrial
+  destination: trial_column
+  name: "probeTrial"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether the trial is a probe trial."
+  codes:
+    0: "regular trial"
+    1: "probe trial"
+- path: log.block.trial.puffOnset
+  destination: trial_column
+  name: "puffOnset"
+  dtype: int32
+  shape: [null]
+  unit: "iterations"
+  transform: left_right
+  in_spec: true
+  description: "Iterations of air puff onset, on each side."
+- path: log.block.trial.puffOpto
+  destination: trial_column
+  name: "puffOpto"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Opto on during puff (tactile) cue region."
+  codes:
+    0: "off"
+    1: "on"
+- path: log.block.trial.puffPos
+  destination: trial_column
+  name: "puffPos"
+  dtype: float32
+  shape: [null]
+  unit: "cm"
+  transform: left_right
+  in_spec: true
+  description: "Y positions of the tactile cues (air puffs), on each side."
+- path: log.block.trial.rawBallInput
+  destination: drop
+  description: "Per-iteration raw ball input (2 cols)"
+  notes: "Dropped by project decision (2026-11-05): not in the original CatalystNeuro conversion, and present in only one log. It holds steering captured before velocity is clamped, so velocity can't rebuild it; it stays in the raw log."
+- path: log.block.trial.rewardBlockIdx
+  destination: trial_column
+  name: "rewardBlockIdx"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Index into variable-reward block schedule (varRewardBlocks)"
+- path: log.block.trial.rewardDelay
+  destination: trial_column
+  name: "rewardDelay"
+  dtype: float32
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Time interval between CS+ and reward."
+- path: log.block.trial.rewardFactor
+  destination: trial_column
+  name: "rewardFactor"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Reward factor recorded for delivery in the reward state; 0 when no reward is due."
+- path: log.block.trial.rewardScale
+  destination: trial_column
+  name: "rewardScale"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Multiplier of reward for each correct trial."
+- path: log.block.trial.rule
+  destination: trial_column
+  name: "rule"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Specifies what the mouse should do to receive reward. Can be \"StartCycle < EndCycle Left\" or \"StartCycle < EndCycle Right\"."
+- path: log.block.trial.sensorDots
+  destination: timeseries
+  name: "SensorDots"
+  dtype: int16
+  shape: [null, 5]
+  description: "Per-iteration raw ball-sensor readout (5 cols, int16); logged through ITI."
+  notes: "One row per time row; logged through the ITI."
+- path: log.block.trial.sideRule
+  destination: trial_column
+  name: "sideRule"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "=1, Left cue rewarded; =2, Right rewarded; =0, both sides rewarded/CS+."
+  codes:
+    0: "both sides rewarded"
+    1: "left cue rewarded"
+    2: "right cue rewarded"
+- path: log.block.trial.start
+  destination: trial_column
+  name: "start_time"
+  dtype: float64
+  shape: []
+  unit: "s"
+  description: "Initial time of trial (# of seconds since session started)"
+  notes: "Inherited TimeIntervals column; stop_time is start + duration. Relative to the first block's start, except that a clock reset (several log.version entries) needs an offset."
+- path: log.block.trial.startPosition
+  destination: trial_column
+  name: "startPosition"
+  dtype: float32
+  shape: [4]
+  in_spec: true
+  description: "Start position of the trial as [x, y, z, theta]."
+- path: log.block.trial.state_ports
+  destination: drop
+  description: "Cell of lick port states at each lick."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block.trial.steadyState
+  destination: trial_column
+  name: "steadyState"
+  dtype: float32
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.step_size
+  destination: trial_column
+  name: "step_size"
+  dtype: float32
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Scalar [cm], how much to move the moon beacon triggerpoint on each trial."
+- path: log.block.trial.stimulusTable
+  destination: structural
+  description: "Cell array of dimensions NPAIRS x 8. Each row is a (StartCycle,EndCycle) stimulus pair. Columns: 1. PairNum: int, row index. 2. Prob: float, prior probability of each pair. 3. Side: char, 'R' or 'L', correct side for each pair. 4. Sa: float, frequency of first stimulus. 5. Sb: float, frequency of second stimulus. 6. Hits: float, cumulative hitrate for this stimulus pair. 7. NTotal: int, number of times this pair has been shown. 8. PostProb: float, posterior probability of showing this pair."
+  notes: "One StimulusPairs row per (block, pair) from the static columns; one ragged trial column for each running column; stimulus_pair references the row from pairNum."
+- path: log.block.trial.stimulusTable.Hits
+  destination: trial_column
+  name: "Hits"
+  dtype: float32
+  shape: [null]
+  in_spec: true
+  description: "Cumulative hit rate of each stimulus pair at this trial; NaN before a pair has been shown."
+- path: log.block.trial.stimulusTable.NTotal
+  destination: trial_column
+  name: "NTotal"
+  dtype: int32
+  shape: [null]
+  in_spec: true
+  description: "Number of times each pair has been shown at this trial."
+- path: log.block.trial.stimulusTable.PairNum
+  destination: stimulus_pairs_column
+  name: "PairNum"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Row index of the stimulus pair."
+- path: log.block.trial.stimulusTable.PostProb
+  destination: trial_column
+  name: "PostProb"
+  dtype: float32
+  shape: [null]
+  in_spec: true
+  description: "Posterior probability of showing each pair at this trial."
+- path: log.block.trial.stimulusTable.Prob
+  destination: stimulus_pairs_column
+  name: "Prob"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Prior probability of each pair."
+- path: log.block.trial.stimulusTable.Sa
+  destination: stimulus_pairs_column
+  name: "Sa"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Frequency of the first stimulus."
+- path: log.block.trial.stimulusTable.Sb
+  destination: stimulus_pairs_column
+  name: "Sb"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Frequency of the second stimulus."
+- path: log.block.trial.stimulusTable.Side
+  destination: stimulus_pairs_column
+  name: "Side"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Correct side for each pair."
+  codes:
+    "L": "left"
+    "R": "right"
+- path: log.block.trial.tactileRule
+  destination: trial_column
+  name: "tactileRule"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether tactile cues are rewarding."
+  codes:
+    0: "tactile cues not rewarding"
+    1: "tactile cues rewarding"
+- path: log.block.trial.thermoLateralization
+  destination: trial_column
+  name: "thermoLateralization"
+  dtype: float32
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.thermocouple
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.block.trial.time
+  destination: timestamps
+  name: "timestamps"
+  dtype: float32
+  shape: [null]
+  unit: "s"
+  description: "time vector for each frame measured by Virmen."
+  notes: "Relative to the trial start; add trial.start only, because it already counts from the first block. Longer than position: it keeps logging through the ITI."
+- path: log.block.trial.timeWriteLiveStats
+  destination: drop
+  description: "Seconds spent writing live stats to DB after trial (-1 if not)"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.block.trial.totalWaitTime
+  destination: trial_column
+  name: "totalWaitTime"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Per-attempt vector, trimmed separately from the other doorstop vectors, so do not pair them by element."
+- path: log.block.trial.towerOpto
+  destination: trial_column
+  name: "towerOpto"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Opto on during tower (visual) cue region."
+  codes:
+    0: "off"
+    1: "on"
+- path: log.block.trial.trialDifficultyType
+  destination: trial_column
+  name: "trialDifficultyType"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Difficulty category of trial."
+- path: log.block.trial.trialID
+  destination: trial_column
+  name: "trialID"
+  dtype: float32
+  shape: []
+  in_spec: true
+  description: "Index of the stimulus train drawn from the stimulus bank."
+  notes: "Holds NaN and -99 in some sessions, so it stays a float."
+- path: log.block.trial.trialNum
+  destination: drop
+  description: "The trial number (not reliable, bugged)."
+  notes: "The trial's position in the session; exactly derivable in all 645 surveyed trials."
+- path: log.block.trial.trialProb
+  destination: trial_column
+  name: "trialProb"
+  dtype: float32
+  shape: [2]
+  transform: complementary_pair
+  in_spec: true
+  description: "Probability that the trial was drawn as [left, right], from the trial-drawing method."
+  notes: "source: ChoiceExperimentStats.drawTrial returns one value per choice. Logged as the scalar 0.5 when no draw applied (warmup); every scalar in the survey is 0.5."
+- path: log.block.trial.trialRewarded
+  destination: trial_column
+  name: "trialRewarded"
+  dtype: int8
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trialType
+  destination: trial_column
+  name: "trialType"
+  dtype: text
+  shape: []
+  transform: enum_name
+  in_spec: true
+  description: "Rewarded side of the trial."
+  codes:
+    "L": "left"
+    "R": "right"
+- path: log.block.trial.trial_bank_session
+  destination: structural
+  description: "Source trial replayed from the trial bank (one-row MATLAB table per trial); its members have their own entries."
+  notes: "source: common/GetTrialVelocityBank/select_trial_from_trial_bank.m."
+- path: log.block.trial.trial_bank_session.block
+  destination: trial_column
+  name: "trial_bank_block"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member block of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.idx_session
+  destination: trial_column
+  name: "trial_bank_idx_session"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member idx_session of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.level
+  destination: trial_column
+  name: "trial_bank_level"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member level of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.n_trial
+  destination: trial_column
+  name: "trial_bank_n_trial"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member n_trial of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.num_trial_block
+  destination: trial_column
+  name: "trial_bank_num_trial_block"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member num_trial_block of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.position
+  destination: trial_column
+  name: "trial_bank_position"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Member position of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.session_date
+  destination: trial_column
+  name: "trial_bank_session_date"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Member session_date of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.session_number
+  destination: trial_column
+  name: "trial_bank_session_number"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member session_number of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.subject_fullname
+  destination: trial_column
+  name: "trial_bank_subject_fullname"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Member subject_fullname of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.sublevel
+  destination: trial_column
+  name: "trial_bank_sublevel"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Member sublevel of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.trial_bank_session.velocity
+  destination: trial_column
+  name: "trial_bank_velocity"
+  dtype: float32
+  shape: [null]
+  meaning_known: false
+  description: "Member velocity of the trial-bank source trial. Meaning not documented yet; stored as recorded."
+- path: log.block.trial.velocity
+  destination: timeseries
+  name: "Velocity"
+  dtype: float32
+  shape: [null, 3]
+  description: "velocity matrix for each frame (X(cm/s), Y(cm/s), rotationalvlocity(rad/s))"
+  notes: "Columns 0-1: velocity in cm/s. Column 2: angular velocity in rad/s, stored as its own AngularVelocity TimeSeries."
+- path: log.block.trial.viStart
+  destination: trial_column
+  name: "viStart"
+  dtype: int32
+  shape: []
+  unit: "iterations"
+  in_spec: true
+  description: "Global ViRMEn iteration count (vr.iterations) at trial start."
+- path: log.block.trial.visualRule
+  destination: trial_column
+  name: "visualRule"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether visual cues are rewarding."
+  codes:
+    0: "visual cues not rewarding"
+    1: "visual cues rewarding"
+- path: log.block.trial.wallGuide
+  destination: trial_column
+  name: "wallGuide"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Boolean, whether wallGuides were active or not on this trial."
+- path: log.block.trialParams
+  destination: structural
+  description: "Snapshot of vr.mazesProtocol(mazeID) params (LSTT)"
+- path: log.block.trialParams.cueMaxProbability
+  destination: epoch_column
+  name: "trialParams_cueMaxProbability"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "max ratio of salient vs. distractor towers."
+- path: log.block.trialParams.cueMinProbability
+  destination: epoch_column
+  name: "trialParams_cueMinProbability"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "min ratio of salient vs. distractor towers."
+- path: log.block.trialParams.difficultySet
+  destination: epoch_column
+  name: "trialParams_difficultySet"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Percent of easy, medium and hard trials, such as [50, 50, 0]. A single value means the mix wasn't used; those logs store false, kept as 0."
+- path: log.block.trialParams.lCue
+  destination: epoch_column
+  name: "trialParams_lCue"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Length of the cue segment."
+- path: log.block.trialParams.lMemory
+  destination: epoch_column
+  name: "trialParams_lMemory"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Length of the segment after the cue segment, where no cues appear."
+- path: log.block.versionIndex
+  destination: drop
+  description: "Index into log.version for this block (NOTE: newBlock() overwrites it with 1)"
+  notes: "Always 1: newBlock() overwrites it, so it cannot be trusted."
+- path: log.block.warmupIndex
+  destination: epoch_column
+  name: "warmupIndex"
+  dtype: int32
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.consecutiveViolationTrials
+  destination: lab_meta_attribute
+  name: "consecutiveViolationTrials"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Running count of consecutive violation trials (live stats)"
+- path: log.currentIt
+  destination: drop
+  description: "The trial time index (iteration) currently being recorded into."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.currentTrial
+  destination: drop
+  description: "The trial being currently recorded into (in-progress copy of last trial; mirrors log.block.trial schema)"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.initialTimestamp
+  destination: lab_meta_attribute
+  name: "initialTimestamp"
+  dtype: isodatetime
+  shape: []
+  transform: datevec
+  in_spec: true
+  description: "Clock time when the ViRMEn engine started."
+- path: log.label
+  destination: drop
+  description: "Short label to identify the maze type (first letter of world name)"
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.numTrials
+  destination: lab_meta_attribute
+  name: "num_trials"
+  dtype: int32
+  shape: []
+  required: true
+  in_spec: true
+  description: "Number of trials of session (count of logEnd calls)"
+- path: log.numTrialsTry
+  destination: lab_meta_attribute
+  name: "numTrialsTry"
+  dtype: int32
+  shape: [null]
+  in_spec: true
+  description: "Number of trials for each try (restart) of the session."
+- path: log.session
+  destination: structural
+  description: "Session schedule and block list."
+- path: log.session.blocks
+  destination: drop
+  description: "[first last] block indices belonging to this session."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.session.end
+  destination: lab_meta_attribute
+  name: "session_end_time"
+  dtype: isodatetime
+  shape: []
+  transform: datevec
+  required: true
+  in_spec: true
+  description: "Datetime when the session ended."
+- path: log.session.start
+  destination: nwbfile
+  name: "session_start_time"
+  dtype: isodatetime
+  shape: []
+  transform: datevec
+  description: "Datetime when the session started."
+- path: log.timeElapsedFirstTrial
+  destination: lab_meta_attribute
+  name: "timeElapsedFirstTrial"
+  dtype: float64
+  shape: []
+  unit: "s"
+  transform: empty_to_missing
+  in_spec: true
+  description: "timeElapsed from ViRMEn engine start to first iteration (t=0 trial)"
+  notes: "Empty in 29 of the 30 sessions that log it."
+- path: log.timeElapsedVideoStart
+  destination: lab_meta_attribute
+  name: "timeElapsedVideoStart"
+  dtype: float64
+  shape: []
+  unit: "s"
+  transform: empty_to_missing
+  in_spec: true
+  description: "timeElapsed from ViRMEn engine start to video capture start; for syncing face video and ViRMEn."
+  notes: "Empty in 29 of the 30 sessions that log it."
+- path: log.version
+  destination: structural
+  description: "Versioning information; several entries when the world structure changed in a continued log."
+- path: log.version.code
+  destination: lab_meta_attribute
+  name: "experiment_name"
+  dtype: text
+  shape: []
+  transform: function_name
+  required: true
+  in_spec: true
+  description: "Name of experiment run."
+- path: log.version.codeVersion
+  destination: lab_meta_attribute
+  name: "codeVersion"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Code version number from vr.exper.variables.codeVersion (versionInfo)"
+- path: log.version.mazeVersion
+  destination: lab_meta_attribute
+  name: "mazeVersion"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Maze version number from vr.exper.variables.mazeVersion (versionInfo)"
+- path: log.version.mazes
+  destination: structural
+  description: "Mazes configured for the session."
+- path: log.version.mazes.color
+  destination: drop
+  description: "Display colour of this maze level in the GUI/plots."
+  notes: "An empty struct in all 621 surveyed mazes."
+- path: log.version.mazes.criteria
+  destination: structural
+  description: "Per-level advancement criteria from protocol."
+- path: log.version.mazes.criteria.blockPerform
+  destination: maze_column
+  name: "blockPerform"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "performance threshold to go into easy block."
+- path: log.version.mazes.criteria.contextLoop
+  destination: settings
+  name: "version.mazes.criteria.contextLoop"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.criteria.criteriaNTrials
+  destination: maze_column
+  name: "criteriaNTrials"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Number of trials over which performance criteria are evaluated."
+- path: log.version.mazes.criteria.easyBlock
+  destination: maze_column
+  name: "easyBlock"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "maze ID of easy block (NaN = none)"
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.easyBlockNTrials
+  destination: maze_column
+  name: "easyBlockNTrials"
+  dtype: float64
+  shape: []
+  transform: empty_to_missing
+  in_spec: true
+  description: "number of trials in easy block."
+- path: log.version.mazes.criteria.easyBlockPerformanceDemote
+  destination: maze_column
+  name: "easyBlockPerformanceDemote"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Performance threshold for demotion into easier easy block."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.easyBlockPerformancePromote
+  destination: maze_column
+  name: "easyBlockPerformancePromote"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Performance threshold for promotion back to main maze or more difficult easy block."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.loopMaze
+  destination: settings
+  name: "version.mazes.criteria.loopMaze"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.criteria.maxBias
+  destination: maze_column
+  name: "maxBias"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Maximum side bias permitted to advance."
+- path: log.version.mazes.criteria.numBlockTrials
+  destination: maze_column
+  name: "numBlockTrials"
+  dtype: float64
+  shape: []
+  transform: empty_to_missing
+  in_spec: true
+  description: "number of trials for sliding window performance."
+- path: log.version.mazes.criteria.numRewardsPerMin
+  destination: maze_column
+  name: "numRewardsPerMin"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Number of reward required per minute to be considered maintaining “good” performance."
+- path: log.version.mazes.criteria.numSessions
+  destination: maze_column
+  name: "numSessions"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Minimum number of sessions at this level before advancing."
+- path: log.version.mazes.criteria.numTrials
+  destination: maze_column
+  name: "numTrials"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Minimum number of trials to advance level."
+- path: log.version.mazes.criteria.numTrialsPerMin
+  destination: maze_column
+  name: "numTrialsPerMin"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Minimum trials per minute to advance."
+- path: log.version.mazes.criteria.performance
+  destination: maze_column
+  name: "performance"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Performance threshold to advance."
+- path: log.version.mazes.criteria.sublevelDemotion
+  destination: maze_column
+  name: "sublevelDemotion"
+  dtype: int8
+  shape: []
+  in_spec: true
+  description: "Whether the level demotes to a lower sublevel."
+  codes:
+    0: "no sublevel demotion"
+    1: "sublevel demotion"
+- path: log.version.mazes.criteria.warmupBias
+  destination: maze_column
+  name: "warmupBias"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Bias threshold to finish warmup."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.warmupMaze
+  destination: maze_column
+  name: "warmupMaze"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Maze ID(s) used for warmup."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.warmupMotor
+  destination: maze_column
+  name: "warmupMotor"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Motor (excess travel) threshold for warmup."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.warmupNTrials
+  destination: maze_column
+  name: "warmupNTrials"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Number of warmup trials (per warmup maze); [] if none, vector if several warmups."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.criteria.warmupPerform
+  destination: maze_column
+  name: "warmupPerform"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Performance threshold to finish warmup."
+  notes: "[] when unset, a scalar for one and a vector for several; a NaN is kept as recorded."
+- path: log.version.mazes.puffDeliveryAt
+  destination: settings
+  name: "version.mazes.puffDeliveryAt"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.turnHint_Mem
+  destination: maze_column
+  name: "turnHint_Mem"
+  dtype: int8
+  shape: []
+  transform: empty_to_missing
+  missing: -1
+  in_spec: true
+  description: "Whether the turn hint is visible in the memory region for this level."
+  codes:
+    -1: "not specified"
+    0: "hidden"
+    1: "visible"
+- path: log.version.mazes.turnHint_Puff
+  destination: maze_column
+  name: "turnHint_Puff"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the turn hint is visible in the puff region for this level."
+- path: log.version.mazes.variable
+  destination: structural
+  description: "Per-level ViRMEn variable overrides (strings) from protocol."
+- path: log.version.mazes.variable.alternateTrials
+  destination: settings
+  name: "version.mazes.variable.alternateTrials"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.antiFraction
+  destination: settings
+  name: "version.mazes.variable.antiFraction"
+  dtype: text
+  shape: []
+  description: "fraction of trials with inverted reward condition."
+- path: log.version.mazes.variable.automaticEndReward
+  destination: settings
+  name: "version.mazes.variable.automaticEndReward"
+  dtype: text
+  shape: []
+  description: "Reward is delivered after rewardWindow or not."
+- path: log.version.mazes.variable.automaticReward
+  destination: settings
+  name: "version.mazes.variable.automaticReward"
+  dtype: text
+  shape: []
+  description: "Reward will be delivered in the correct spout automatically after tone played (in spite no lick occurred)"
+- path: log.version.mazes.variable.bonusRewards
+  destination: settings
+  name: "version.mazes.variable.bonusRewards"
+  dtype: text
+  shape: []
+  description: "Deliver bonus rewards when distance or velocity thresholds are met."
+- path: log.version.mazes.variable.context
+  destination: settings
+  name: "version.mazes.variable.context"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.cruisingSpeed
+  destination: settings
+  name: "version.mazes.variable.cruisingSpeed"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.cueAtTheEnd
+  destination: settings
+  name: "version.mazes.variable.cueAtTheEnd"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.cueDensityPerM
+  destination: settings
+  name: "version.mazes.variable.cueDensityPerM"
+  dtype: text
+  shape: []
+  description: "Total cue (tower) density per metre."
+- path: log.version.mazes.variable.cueDuration
+  destination: settings
+  name: "version.mazes.variable.cueDuration"
+  dtype: text
+  shape: []
+  description: "Cue visible duration in seconds (NaN = until passed)"
+- path: log.version.mazes.variable.cueMaxDistance
+  destination: settings
+  name: "version.mazes.variable.cueMaxDistance"
+  dtype: text
+  shape: []
+  description: "Max distance before cues/distractors (or random-interval rewards) are presented; ensure lCue is long enough."
+- path: log.version.mazes.variable.cueMaxProbability
+  destination: settings
+  name: "version.mazes.variable.cueMaxProbability"
+  dtype: text
+  shape: []
+  description: "max ratio of salient vs. distractor towers."
+- path: log.version.mazes.variable.cueMinProbability
+  destination: settings
+  name: "version.mazes.variable.cueMinProbability"
+  dtype: text
+  shape: []
+  description: "min ratio of salient vs. distractor towers."
+- path: log.version.mazes.variable.cueProbability
+  destination: settings
+  name: "version.mazes.variable.cueProbability"
+  dtype: text
+  shape: []
+  description: "Salient-vs-distractor log-odds parameter for Poisson cue draw (inf = no distractors)"
+- path: log.version.mazes.variable.cueVisibleAt
+  destination: settings
+  name: "version.mazes.variable.cueVisibleAt"
+  dtype: text
+  shape: []
+  description: "Distance (cm) in front of mouse at which cues become visible."
+- path: log.version.mazes.variable.delayDuration
+  destination: settings
+  name: "version.mazes.variable.delayDuration"
+  dtype: text
+  shape: []
+  description: "Delay duration."
+- path: log.version.mazes.variable.difficultySet
+  destination: settings
+  name: "version.mazes.variable.difficultySet"
+  dtype: text
+  shape: []
+  description: "Exact trial is repeated after error."
+- path: log.version.mazes.variable.doorstopStatus
+  destination: settings
+  name: "version.mazes.variable.doorstopStatus"
+  dtype: text
+  shape: []
+  description: "If 0, no doorstop; if 1, visible doorstop; if 2 invisible doorstop."
+- path: log.version.mazes.variable.doorstopVelThresh1
+  destination: settings
+  name: "version.mazes.variable.doorstopVelThresh1"
+  dtype: text
+  shape: []
+  description: "Delay period entry velocity threshold."
+- path: log.version.mazes.variable.doorstopVelThresh2
+  destination: settings
+  name: "version.mazes.variable.doorstopVelThresh2"
+  dtype: text
+  shape: []
+  description: "Delay period entry velocity threshold."
+- path: log.version.mazes.variable.forcedChoice
+  destination: settings
+  name: "version.mazes.variable.forcedChoice"
+  dtype: text
+  shape: []
+  description: "Forced choice L-maze trial (0=T-maze, 1=L-maze)"
+- path: log.version.mazes.variable.friction
+  destination: settings
+  name: "version.mazes.variable.friction"
+  dtype: text
+  shape: []
+  description: "Proportional reduction in displacement if collision detected."
+- path: log.version.mazes.variable.isLinear
+  destination: settings
+  name: "version.mazes.variable.isLinear"
+  dtype: text
+  shape: []
+  description: "Enforce linear task or alternation."
+- path: log.version.mazes.variable.lCue
+  destination: maze_column
+  name: "lCue"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  transform: str2double
+  in_spec: true
+  description: "Length of the cue segment."
+- path: log.version.mazes.variable.lMemory
+  destination: maze_column
+  name: "lMemory"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  transform: str2double
+  in_spec: true
+  description: "Length of the memory (delay) segment."
+- path: log.version.mazes.variable.lStart
+  destination: maze_column
+  name: "lStart"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  transform: str2double
+  in_spec: true
+  description: "Length of the start segment."
+- path: log.version.mazes.variable.landmarkSkip
+  destination: settings
+  name: "version.mazes.variable.landmarkSkip"
+  dtype: text
+  shape: []
+  description: "Factor by which landmarks are skipped."
+- path: log.version.mazes.variable.maxPersevErrors
+  destination: settings
+  name: "version.mazes.variable.maxPersevErrors"
+  dtype: text
+  shape: []
+  description: "Threshold number of repeated errors before removing cap on trial draw probabilities (default max: 0.85)"
+- path: log.version.mazes.variable.maxSkidAngle
+  destination: settings
+  name: "version.mazes.variable.maxSkidAngle"
+  dtype: text
+  shape: []
+  description: "Maximum permitted view angle in pi*rad for progress along Y-axis of main stem; if finite, also requires low threshold view angle to leave Start region."
+- path: log.version.mazes.variable.meanITI
+  destination: settings
+  name: "version.mazes.variable.meanITI"
+  dtype: text
+  shape: []
+  description: "Mean randomization of ITI duration."
+- path: log.version.mazes.variable.minNumCues
+  destination: settings
+  name: "version.mazes.variable.minNumCues"
+  dtype: text
+  shape: []
+  description: "How many towers minimum per level."
+- path: log.version.mazes.variable.modalityRule
+  destination: settings
+  name: "version.mazes.variable.modalityRule"
+  dtype: text
+  shape: []
+  description: "=1, Tactile Rule; =2, Visual; =0, both modalities rewarded/CS+."
+- path: log.version.mazes.variable.nCueSlots
+  destination: settings
+  name: "version.mazes.variable.nCueSlots"
+  dtype: text
+  shape: []
+  description: "Number of discrete cue slots in cue region."
+- path: log.version.mazes.variable.oneLickEndTrial
+  destination: settings
+  name: "version.mazes.variable.oneLickEndTrial"
+  dtype: text
+  shape: []
+  description: "Exact trial is repeated after error."
+- path: log.version.mazes.variable.pDistractorTrials
+  destination: settings
+  name: "version.mazes.variable.pDistractorTrials"
+  dtype: text
+  shape: []
+  description: "proportion of trials including distractor cues (tactile: towers, visual: puffs)"
+- path: log.version.mazes.variable.pMaxDistTrials
+  destination: settings
+  name: "version.mazes.variable.pMaxDistTrials"
+  dtype: text
+  shape: []
+  description: "Proportion of trials with no cues (or invisible reward markers), or with maximal distance-to-cue."
+- path: log.version.mazes.variable.pOmitReward
+  destination: settings
+  name: "version.mazes.variable.pOmitReward"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.pUncuedReward
+  destination: settings
+  name: "version.mazes.variable.pUncuedReward"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.pZeroCueTrials
+  destination: settings
+  name: "version.mazes.variable.pZeroCueTrials"
+  dtype: text
+  shape: []
+  description: "Porportion of trials with 0 cues (for calculation of bias VR 10.2.24)"
+- path: log.version.mazes.variable.preExposure
+  destination: settings
+  name: "version.mazes.variable.preExposure"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.puffDuration
+  destination: settings
+  name: "version.mazes.variable.puffDuration"
+  dtype: text
+  shape: []
+  description: "Duration of air puff in ms."
+- path: log.version.mazes.variable.rectification
+  destination: settings
+  name: "version.mazes.variable.rectification"
+  dtype: text
+  shape: []
+  description: "Subject can lick on both spouts (right/left) until correct choice is made or time has elapsed."
+- path: log.version.mazes.variable.repeatErrorTrials
+  destination: settings
+  name: "version.mazes.variable.repeatErrorTrials"
+  dtype: text
+  shape: []
+  description: "Exact trial is repeated after error."
+- path: log.version.mazes.variable.rewardDelay
+  destination: settings
+  name: "version.mazes.variable.rewardDelay"
+  dtype: text
+  shape: []
+  description: "Time interval between CS+ and reward."
+- path: log.version.mazes.variable.rewardScale
+  destination: settings
+  name: "version.mazes.variable.rewardScale"
+  dtype: text
+  shape: []
+  description: "multiplier of reward for each correct trial (protocolData)"
+- path: log.version.mazes.variable.rewardWindow
+  destination: settings
+  name: "version.mazes.variable.rewardWindow"
+  dtype: text
+  shape: []
+  description: "Subject has x seconds to emit a response (if not, reward is given or reward is delivered )"
+- path: log.version.mazes.variable.sideRule
+  destination: settings
+  name: "version.mazes.variable.sideRule"
+  dtype: text
+  shape: []
+  description: "=1, Left cue rewarded; =2, Right rewarded; =0, both sides rewarded/CS+."
+- path: log.version.mazes.variable.stage
+  destination: settings
+  name: "version.mazes.variable.stage"
+  dtype: text
+  shape: []
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.variable.startPosition
+  destination: settings
+  name: "version.mazes.variable.startPosition"
+  dtype: text
+  shape: []
+  description: "Start position [x y z theta] (Y set in protocol)"
+- path: log.version.mazes.variable.tactileRule
+  destination: settings
+  name: "version.mazes.variable.tactileRule"
+  dtype: text
+  shape: []
+  description: "Tactile cues = rewarding."
+- path: log.version.mazes.variable.teleportToChoice
+  destination: settings
+  name: "version.mazes.variable.teleportToChoice"
+  dtype: text
+  shape: []
+  description: "Trial will start and immediately be transported to choice zone."
+- path: log.version.mazes.variable.timeLimit
+  destination: settings
+  name: "version.mazes.variable.timeLimit"
+  dtype: text
+  shape: []
+  description: "Time limit for session in minutes, or inf."
+- path: log.version.mazes.variable.visualRule
+  destination: settings
+  name: "version.mazes.variable.visualRule"
+  dtype: text
+  shape: []
+  description: "Visual cues = rewarding."
+- path: log.version.mazes.visible
+  destination: structural
+  description: "Per-level visibility flags for world objects (e.g. turn hint)"
+  notes: "A struct, or an empty struct when the level sets no visibility."
+- path: log.version.mazes.visible.tri_turnHint
+  destination: maze_column
+  name: "tri_turnHint"
+  dtype: float64
+  shape: []
+  unit: "cm when it is a distance"
+  transform: empty_to_missing
+  in_spec: true
+  description: "Turn hint visibility: 0 hidden; 1 visible; above 2, visible until this distance from the end of the stem; below 0, hidden until the absolute value of this distance."
+  notes: "Not a boolean. source: poisson_blocks.m:165-168 (hintVisibleFrom); PoissonBlocksCondensed3m.m:7 sets 50 for maze 15."
+- path: log.version.mazes.visible.tri_turnHint_prox
+  destination: settings
+  name: "version.mazes.visible.tri_turnHint_prox"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.mazes.world
+  destination: maze_column
+  name: "world"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "Index of the ViRMEn world used by this maze level."
+- path: log.version.name
+  destination: lab_meta_attribute
+  name: "world_file_name"
+  dtype: text
+  shape: []
+  required: true
+  in_spec: true
+  description: "Name of world file run."
+- path: log.version.repository
+  destination: lab_meta_attribute
+  name: "commit_id"
+  dtype: text
+  shape: []
+  transform: empty_to_missing
+  in_spec: true
+  description: "Commit of the ViRMEn repository during the session; empty in one surveyed log."
+- path: log.version.rig
+  destination: structural
+  description: "Rig parameters."
+- path: log.version.rig.MotorSerialCom
+  destination: settings
+  name: "version.rig.MotorSerialCom"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.SyncPulses
+  destination: settings
+  name: "version.rig.SyncPulses"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.ZaberActuatorCom
+  destination: settings
+  name: "version.rig.ZaberActuatorCom"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.actuatorChannel
+  destination: settings
+  name: "version.rig.actuatorChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.aiChannels
+  destination: settings
+  name: "version.rig.aiChannels"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.airFlowValveChannel
+  destination: settings
+  name: "version.rig.airFlowValveChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.airPuffs
+  destination: settings
+  name: "version.rig.airPuffs"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.airpuffChannel
+  destination: settings
+  name: "version.rig.airpuffChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.airpuffDuration
+  destination: settings
+  name: "version.rig.airpuffDuration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.analogVRange
+  destination: settings
+  name: "version.rig.analogVRange"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.arduinoPort
+  destination: rig_attribute
+  name: "arduinoPort"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "Arduino port as seen in the Windows Device Manager."
+- path: log.version.rig.ballCircumference
+  destination: rig_attribute
+  name: "ballCircumference"
+  dtype: float64
+  shape: []
+  unit: "cm"
+  in_spec: true
+  description: "Circumference of the ball."
+- path: log.version.rig.camera_type
+  destination: settings
+  name: "version.rig.camera_type"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.colorAdjustment
+  destination: rig_attribute
+  name: "colorAdjustment"
+  dtype: float64
+  shape: [3]
+  in_spec: true
+  description: "[R; G; B] scale factor for projector display."
+- path: log.version.rig.counter_lickometer
+  destination: settings
+  name: "version.rig.counter_lickometer"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.delayCueDB
+  destination: settings
+  name: "version.rig.delayCueDB"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.diChannels
+  destination: settings
+  name: "version.rig.diChannels"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.diPort
+  destination: settings
+  name: "version.rig.diPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.galvoInCh
+  destination: settings
+  name: "version.rig.galvoInCh"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.goCueDB
+  destination: settings
+  name: "version.rig.goCueDB"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.guiMonitor
+  destination: drop
+  description: "use \"get(0, 'Monitor');\" to see which monitor, set 1 or 2 for first/second monitor."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.version.rig.habituationDuration
+  destination: settings
+  name: "version.rig.habituationDuration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.hasActuator
+  destination: settings
+  name: "version.rig.hasActuator"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.hasDAQ
+  destination: rig_attribute
+  name: "hasDAQ"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the rig has a DAQ; false when testing on a laptop."
+- path: log.version.rig.hasDAQSync
+  destination: settings
+  name: "version.rig.hasDAQSync"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.hasParallelComm
+  destination: settings
+  name: "version.rig.hasParallelComm"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.hasParallelCommNew
+  destination: settings
+  name: "version.rig.hasParallelCommNew"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.hasSyncComm
+  destination: rig_attribute
+  name: "hasSyncComm"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether digital communications are used for synchronization (ScanImage)."
+- path: log.version.rig.laserChannel
+  destination: rig_attribute
+  name: "laserChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for turning on/off the laser."
+- path: log.version.rig.laserChannel2
+  destination: settings
+  name: "version.rig.laserChannel2"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.laserIP
+  destination: settings
+  name: "version.rig.laserIP"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.laserPort
+  destination: settings
+  name: "version.rig.laserPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.laserTrigChIdx
+  destination: settings
+  name: "version.rig.laserTrigChIdx"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.lateral_cam_adaptor_name
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.lateral_cam_format
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.leftLickChannel
+  destination: settings
+  name: "version.rig.leftLickChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.leftPuffChannel
+  destination: rig_attribute
+  name: "leftPuffChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for the left air puff solenoid."
+- path: log.version.rig.leftRewardChannel
+  destination: settings
+  name: "version.rig.leftRewardChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.lickometer_logic
+  destination: settings
+  name: "version.rig.lickometer_logic"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.locationChannels
+  destination: settings
+  name: "version.rig.locationChannels"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.minIterationDT
+  destination: rig_attribute
+  name: "minIterationDT"
+  dtype: float64
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Minimum expected duration of one ViRMEn iteration."
+- path: log.version.rig.newIterationChannel
+  destination: settings
+  name: "version.rig.newIterationChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.newTrialChannel
+  destination: settings
+  name: "version.rig.newTrialChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.nidaqDOPort
+  destination: settings
+  name: "version.rig.nidaqDOPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.nidaqDevice
+  destination: rig_attribute
+  name: "nidaqDevice"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ device identifier."
+- path: log.version.rig.nidaqLickPort
+  destination: settings
+  name: "version.rig.nidaqLickPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.nidaqLines
+  destination: rig_attribute
+  name: "nidaqLines"
+  dtype: int32
+  shape: [null]
+  in_spec: true
+  description: "NI-DAQ lines for the specified port."
+- path: log.version.rig.nidaqPort
+  destination: rig_attribute
+  name: "nidaqPort"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ port number."
+- path: log.version.rig.nidaqSyncPort
+  destination: settings
+  name: "version.rig.nidaqSyncPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.num_sides_lickometer
+  destination: settings
+  name: "version.rig.num_sides_lickometer"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.p
+  destination: drop
+  description: "padding."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.pdInCh
+  destination: settings
+  name: "version.rig.pdInCh"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.preview
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."
+- path: log.version.rig.proj_param_Rs
+  destination: rig_attribute
+  name: "proj_param_Rs"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_hrescaling
+  destination: rig_attribute
+  name: "proj_param_hrescaling"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_hshift
+  destination: rig_attribute
+  name: "proj_param_hshift"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_r
+  destination: rig_attribute
+  name: "proj_param_r"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_vrescaling
+  destination: rig_attribute
+  name: "proj_param_vrescaling"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_vshift
+  destination: rig_attribute
+  name: "proj_param_vshift"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_xOm
+  destination: rig_attribute
+  name: "proj_param_xOm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_xP1o
+  destination: rig_attribute
+  name: "proj_param_xP1o"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_xsm
+  destination: rig_attribute
+  name: "proj_param_xsm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_yOm
+  destination: rig_attribute
+  name: "proj_param_yOm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_yP1o
+  destination: rig_attribute
+  name: "proj_param_yP1o"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_ysm
+  destination: rig_attribute
+  name: "proj_param_ysm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_zOm
+  destination: rig_attribute
+  name: "proj_param_zOm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_zP1o
+  destination: rig_attribute
+  name: "proj_param_zP1o"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.proj_param_zsm
+  destination: rig_attribute
+  name: "proj_param_zsm"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mini VR spherical-mirror projection geometry parameter."
+- path: log.version.rig.puffAlertDuration
+  destination: settings
+  name: "version.rig.puffAlertDuration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.puffChannel
+  destination: settings
+  name: "version.rig.puffChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.puffDuration
+  destination: rig_attribute
+  name: "puffDuration"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Duration of the air puff."
+  notes: "Recorded value is 0.035 in the only log that has it; the unit needs confirming."
+- path: log.version.rig.puffPunishmentDuration
+  destination: settings
+  name: "version.rig.puffPunishmentDuration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.puffSize
+  destination: settings
+  name: "version.rig.puffSize"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.pulseArduinoPort
+  destination: settings
+  name: "version.rig.pulseArduinoPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.punishmentDB
+  destination: settings
+  name: "version.rig.punishmentDB"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.retryDB
+  destination: settings
+  name: "version.rig.retryDB"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.reward2Duration
+  destination: settings
+  name: "version.rig.reward2Duration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.rewardChannel
+  destination: rig_attribute
+  name: "rewardChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for turning on/off the solenoid valve."
+- path: log.version.rig.rewardDuration
+  destination: rig_attribute
+  name: "rewardDuration"
+  dtype: float64
+  shape: []
+  unit: "s"
+  in_spec: true
+  description: "Valve opening duration for a 4 uL reward."
+- path: log.version.rig.rewardSize
+  destination: rig_attribute
+  name: "rewardSize"
+  dtype: float64
+  shape: []
+  unit: "mL"
+  in_spec: true
+  description: "Size of one reward."
+- path: log.version.rig.rig
+  destination: lab_meta_attribute
+  name: "location"
+  dtype: text
+  shape: []
+  required: true
+  in_spec: true
+  description: "Name of the rig where the session ran."
+- path: log.version.rig.rig_type
+  destination: rig_attribute
+  name: "rig_type"
+  dtype: text
+  shape: []
+  in_spec: true
+  description: "miniVR or normalVR (the projection depends on the rig type)."
+- path: log.version.rig.rightLickChannel
+  destination: settings
+  name: "version.rig.rightLickChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.rightPuffChannel
+  destination: rig_attribute
+  name: "rightPuffChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for the right air puff solenoid."
+- path: log.version.rig.rightRewardChannel
+  destination: settings
+  name: "version.rig.rightRewardChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.saveCh
+  destination: settings
+  name: "version.rig.saveCh"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.saveChIdx
+  destination: settings
+  name: "version.rig.saveChIdx"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.sensorDotsPerRev
+  destination: rig_attribute
+  name: "sensorDotsPerRev"
+  dtype: float64
+  shape: [null]
+  in_spec: true
+  description: "Sensor dots per ball revolution, per MovementSensor (calibrateBall)"
+  notes: "One value, or one per MovementSensor; a scalar becomes a one-element vector."
+- path: log.version.rig.sessionChannel
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.sessionRewardScale
+  destination: settings
+  name: "version.rig.sessionRewardScale"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.simulationMode
+  destination: rig_attribute
+  name: "simulationMode"
+  dtype: bool
+  shape: []
+  in_spec: true
+  description: "Whether the session ran in simulation mode, with human input via keyboard."
+- path: log.version.rig.soundAdjustment
+  destination: rig_attribute
+  name: "soundAdjustment"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Scale factor for sound volume."
+- path: log.version.rig.squal
+  destination: rig_attribute
+  name: "squal"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "Mean ball-sensor surface quality (squal) measured at session start."
+- path: log.version.rig.syncClockChannel
+  destination: rig_attribute
+  name: "syncClockChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for I2C clock signal."
+- path: log.version.rig.syncDataChannel
+  destination: rig_attribute
+  name: "syncDataChannel"
+  dtype: int32
+  shape: []
+  in_spec: true
+  description: "NI-DAQ digital line for I2C data signal."
+- path: log.version.rig.syncFirstChannel
+  destination: settings
+  name: "version.rig.syncFirstChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.syncLastChannel
+  destination: settings
+  name: "version.rig.syncLastChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.syncParallelLength
+  destination: settings
+  name: "version.rig.syncParallelLength"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.syncParallelPort
+  destination: settings
+  name: "version.rig.syncParallelPort"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.toneChannel
+  destination: settings
+  name: "version.rig.toneChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.toneDuration
+  destination: settings
+  name: "version.rig.toneDuration"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.toneSize
+  destination: settings
+  name: "version.rig.toneSize"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.top_cam_adaptor_name
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.top_cam_format
+  destination: drop
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+  notes: "Empty in every surveyed log."
+- path: log.version.rig.toroidXFormP1
+  destination: rig_attribute
+  name: "toroidXFormP1"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "p1 parameter (slope) from poly1 fit of toroidal screen transformation."
+- path: log.version.rig.toroidXFormP2
+  destination: rig_attribute
+  name: "toroidXFormP2"
+  dtype: float64
+  shape: []
+  in_spec: true
+  description: "p2 parameter (offset) from poly1 fit of toroidal screen transformation."
+- path: log.version.rig.trainPulseFullChannel
+  destination: settings
+  name: "version.rig.trainPulseFullChannel"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_acquisition_rate
+  destination: settings
+  name: "version.rig.video_acquisition_rate"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_exposure_time_in_microseconds
+  destination: settings
+  name: "version.rig.video_exposure_time_in_microseconds"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_ext
+  destination: settings
+  name: "version.rig.video_ext"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_gain
+  destination: settings
+  name: "version.rig.video_gain"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_parent_path
+  destination: settings
+  name: "version.rig.video_parent_path"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_record
+  destination: settings
+  name: "version.rig.video_record"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.video_type
+  destination: settings
+  name: "version.rig.video_type"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.virmenIP
+  destination: settings
+  name: "version.rig.virmenIP"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.virmenStateChannels
+  destination: settings
+  name: "version.rig.virmenStateChannels"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.rig.webcam_name
+  destination: settings
+  name: "version.rig.webcam_name"
+  dtype: text
+  shape: []
+  meaning_known: false
+  description: "Meaning not documented yet; stored as recorded."
+- path: log.version.variables
+  destination: structural
+  description: "ViRMEn experiment variables."
+- path: log.version.variables.Ease
+  destination: settings
+  name: "version.variables.Ease"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.EndCycle
+  destination: settings
+  name: "version.variables.EndCycle"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.SphereOffset
+  destination: settings
+  name: "version.variables.SphereOffset"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.StartCycle
+  destination: settings
+  name: "version.variables.StartCycle"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.alternateTrials
+  destination: settings
+  name: "version.variables.alternateTrials"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.angEase
+  destination: settings
+  name: "version.variables.angEase"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.animalElevation
+  destination: settings
+  name: "version.variables.animalElevation"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.antiFraction
+  destination: settings
+  name: "version.variables.antiFraction"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); fraction of trials with inverted reward condition."
+- path: log.version.variables.armBb
+  destination: settings
+  name: "version.variables.armBb"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.armBorder
+  destination: settings
+  name: "version.variables.armBorder"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.armWidth
+  destination: settings
+  name: "version.variables.armWidth"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.automaticEndReward
+  destination: settings
+  name: "version.variables.automaticEndReward"
+  dtype: text
+  shape: []
+  description: "Reward is delivered after rewardWindow or not."
+- path: log.version.variables.automaticReward
+  destination: settings
+  name: "version.variables.automaticReward"
+  dtype: text
+  shape: []
+  description: "Reward will be delivered in the correct spout automatically after tone played (in spite no lick occurred)"
+- path: log.version.variables.bonusRewards
+  destination: settings
+  name: "version.variables.bonusRewards"
+  dtype: text
+  shape: []
+  description: "Deliver bonus rewards when distance or velocity thresholds are met."
+- path: log.version.variables.border
+  destination: settings
+  name: "version.variables.border"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.borderArm
+  destination: settings
+  name: "version.variables.borderArm"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.codeVersion
+  destination: settings
+  name: "version.variables.codeVersion"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.color_2
+  destination: settings
+  name: "version.variables.color_2"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.color_3
+  destination: settings
+  name: "version.variables.color_3"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.color_7
+  destination: settings
+  name: "version.variables.color_7"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.color_8
+  destination: settings
+  name: "version.variables.color_8"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.context
+  destination: settings
+  name: "version.variables.context"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.contextSettings
+  destination: settings
+  name: "version.variables.contextSettings"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.cruisingSpeed
+  destination: settings
+  name: "version.variables.cruisingSpeed"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.cueColor
+  destination: settings
+  name: "version.variables.cueColor"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.cueDensityPerM
+  destination: settings
+  name: "version.variables.cueDensityPerM"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Total cue (tower) density per metre."
+- path: log.version.variables.cueDuration
+  destination: settings
+  name: "version.variables.cueDuration"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Cue visible duration in seconds (NaN = until passed)"
+- path: log.version.variables.cueMaxDistance
+  destination: settings
+  name: "version.variables.cueMaxDistance"
+  dtype: text
+  shape: []
+  description: "Max distance before cues/distractors (or random-interval rewards) are presented; ensure lCue is long enough."
+- path: log.version.variables.cueMinSeparation
+  destination: settings
+  name: "version.variables.cueMinSeparation"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.cueProbability
+  destination: settings
+  name: "version.variables.cueProbability"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Salient-vs-distractor log-odds parameter for Poisson cue draw (inf = no distractors)"
+- path: log.version.variables.cueVisibleAt
+  destination: settings
+  name: "version.variables.cueVisibleAt"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Distance (cm) in front of mouse at which cues become visible."
+- path: log.version.variables.delayDuration
+  destination: settings
+  name: "version.variables.delayDuration"
+  dtype: text
+  shape: []
+  description: "Delay duration."
+- path: log.version.variables.dimCue
+  destination: settings
+  name: "version.variables.dimCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.doorstopStatus
+  destination: settings
+  name: "version.variables.doorstopStatus"
+  dtype: text
+  shape: []
+  description: "If 0, no doorstop; if 1, visible doorstop; if 2 invisible doorstop."
+- path: log.version.variables.doorstopVelThresh1
+  destination: settings
+  name: "version.variables.doorstopVelThresh1"
+  dtype: text
+  shape: []
+  description: "Delay period entry velocity threshold."
+- path: log.version.variables.doorstopVelThresh2
+  destination: settings
+  name: "version.variables.doorstopVelThresh2"
+  dtype: text
+  shape: []
+  description: "Delay period entry velocity threshold."
+- path: log.version.variables.epsilon
+  destination: settings
+  name: "version.variables.epsilon"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.epsilon2
+  destination: settings
+  name: "version.variables.epsilon2"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.forcedChoice
+  destination: settings
+  name: "version.variables.forcedChoice"
+  dtype: text
+  shape: []
+  description: "L-maze trials."
+- path: log.version.variables.fracDuplicated
+  destination: settings
+  name: "version.variables.fracDuplicated"
+  dtype: text
+  shape: []
+  description: "Fraction of per-session trials that will have duplicates (includes the duplicates)"
+- path: log.version.variables.friction
+  destination: settings
+  name: "version.variables.friction"
+  dtype: text
+  shape: []
+  description: "Proportional reduction in displacement if collision detected."
+- path: log.version.variables.hCue
+  destination: settings
+  name: "version.variables.hCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.hEntry
+  destination: settings
+  name: "version.variables.hEntry"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.hHint
+  destination: settings
+  name: "version.variables.hHint"
+  dtype: text
+  shape: []
+  description: "height of visual guides (cm)"
+- path: log.version.variables.hWall
+  destination: settings
+  name: "version.variables.hWall"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.hWalll
+  destination: settings
+  name: "version.variables.hWalll"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.interTrialCorrectDuration
+  destination: settings
+  name: "version.variables.interTrialCorrectDuration"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.interTrialWrongDuration
+  destination: settings
+  name: "version.variables.interTrialWrongDuration"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.isLinear
+  destination: settings
+  name: "version.variables.isLinear"
+  dtype: text
+  shape: []
+  description: "Enforce linear task or alternation."
+- path: log.version.variables.lArm
+  destination: settings
+  name: "version.variables.lArm"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lChoice
+  destination: settings
+  name: "version.variables.lChoice"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lContext
+  destination: settings
+  name: "version.variables.lContext"
+  dtype: text
+  shape: []
+  description: "for maze length."
+- path: log.version.variables.lCue
+  destination: settings
+  name: "version.variables.lCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Length of cue region (cm)"
+- path: log.version.variables.lCues
+  destination: settings
+  name: "version.variables.lCues"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lDoorstop
+  destination: settings
+  name: "version.variables.lDoorstop"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lEase
+  destination: settings
+  name: "version.variables.lEase"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lEnd
+  destination: settings
+  name: "version.variables.lEnd"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lExtraEndWalls
+  destination: settings
+  name: "version.variables.lExtraEndWalls"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lM
+  destination: settings
+  name: "version.variables.lM"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lMemory
+  destination: settings
+  name: "version.variables.lMemory"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Length of memory/delay region (cm)"
+- path: log.version.variables.lNarrowing
+  destination: settings
+  name: "version.variables.lNarrowing"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lPre
+  destination: settings
+  name: "version.variables.lPre"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lSandbox
+  destination: settings
+  name: "version.variables.lSandbox"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lSlide
+  destination: settings
+  name: "version.variables.lSlide"
+  dtype: text
+  shape: []
+  description: "Arbitrary slide length ***FUTURE: put in protocol***."
+- path: log.version.variables.lStart
+  destination: settings
+  name: "version.variables.lStart"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Length of start region (cm)"
+- path: log.version.variables.lTurn
+  destination: settings
+  name: "version.variables.lTurn"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.landmarkSkip
+  destination: settings
+  name: "version.variables.landmarkSkip"
+  dtype: text
+  shape: []
+  description: "Factor by which landmarks are skipped."
+- path: log.version.variables.landmarkVisibleAt
+  destination: settings
+  name: "version.variables.landmarkVisibleAt"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.logInterval
+  destination: settings
+  name: "version.variables.logInterval"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lue
+  destination: settings
+  name: "version.variables.lue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lwArm
+  destination: settings
+  name: "version.variables.lwArm"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.lwTrack
+  destination: settings
+  name: "version.variables.lwTrack"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.maxExcessTravel
+  destination: settings
+  name: "version.variables.maxExcessTravel"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.maxPersevErrors
+  destination: settings
+  name: "version.variables.maxPersevErrors"
+  dtype: text
+  shape: []
+  description: "Threshold number of repeated errors before removing cap on trial draw probabilities (default max: 0.85)"
+- path: log.version.variables.maxSkidAngle
+  destination: settings
+  name: "version.variables.maxSkidAngle"
+  dtype: text
+  shape: []
+  description: "Maximum permitted view angle in pi*rad for progress along Y-axis of main stem; if finite, also requires low threshold view angle to leave Start region."
+- path: log.version.variables.maxTrialDuration
+  destination: settings
+  name: "version.variables.maxTrialDuration"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.mazeVersion
+  destination: settings
+  name: "version.variables.mazeVersion"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.meanITI
+  destination: settings
+  name: "version.variables.meanITI"
+  dtype: text
+  shape: []
+  description: "Mean randomization of ITI duration."
+- path: log.version.variables.minNumCues
+  destination: settings
+  name: "version.variables.minNumCues"
+  dtype: text
+  shape: []
+  description: "How many towers minimum per level."
+- path: log.version.variables.modalityRule
+  destination: settings
+  name: "version.variables.modalityRule"
+  dtype: text
+  shape: []
+  description: "=1, Tactile Rule; =2, Visual; =0, both modalities rewarded/CS+."
+- path: log.version.variables.moonRadius
+  destination: settings
+  name: "version.variables.moonRadius"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.nCueSlots
+  destination: settings
+  name: "version.variables.nCueSlots"
+  dtype: text
+  shape: []
+  description: "ViRMEn variable (string expr); Number of discrete cue slots in cue region."
+- path: log.version.variables.pDistractorTrials
+  destination: settings
+  name: "version.variables.pDistractorTrials"
+  dtype: text
+  shape: []
+  description: "proportion of trials including distractor cues (tactile: towers, visual: puffs)"
+- path: log.version.variables.pMaxDistTrials
+  destination: settings
+  name: "version.variables.pMaxDistTrials"
+  dtype: text
+  shape: []
+  description: "Proportion of trials with no cues (or invisible reward markers), or with maximal distance-to-cue."
+- path: log.version.variables.pOmitReward
+  destination: settings
+  name: "version.variables.pOmitReward"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.pUncuedReward
+  destination: settings
+  name: "version.variables.pUncuedReward"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.pZeroCueTrials
+  destination: settings
+  name: "version.variables.pZeroCueTrials"
+  dtype: text
+  shape: []
+  description: "Porportion of trials with 0 cues (for calculation of bias VR 10.2.24)"
+- path: log.version.variables.panSessionTrials
+  destination: settings
+  name: "version.variables.panSessionTrials"
+  dtype: text
+  shape: []
+  description: "Number of trials to pre-generate for use across sessions."
+- path: log.version.variables.preExposure
+  destination: settings
+  name: "version.variables.preExposure"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.puffDuration
+  destination: settings
+  name: "version.variables.puffDuration"
+  dtype: text
+  shape: []
+  description: "Duration of air puff in ms."
+- path: log.version.variables.rectification
+  destination: settings
+  name: "version.variables.rectification"
+  dtype: text
+  shape: []
+  description: "Subject can lick on both spouts (right/left) until correct choice is made or time has elapsed."
+- path: log.version.variables.rewardDelay
+  destination: settings
+  name: "version.variables.rewardDelay"
+  dtype: text
+  shape: []
+  description: "Time interval between CS+ and reward."
+- path: log.version.variables.rewardScale
+  destination: settings
+  name: "version.variables.rewardScale"
+  dtype: text
+  shape: []
+  description: "1 = 4microlts."
+- path: log.version.variables.rewardWindow
+  destination: settings
+  name: "version.variables.rewardWindow"
+  dtype: text
+  shape: []
+  description: "Subject has x seconds to emit a response (if not, reward is given or reward is delivered )"
+- path: log.version.variables.sampleNumTrials
+  destination: settings
+  name: "version.variables.sampleNumTrials"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.sideRule
+  destination: settings
+  name: "version.variables.sideRule"
+  dtype: text
+  shape: []
+  description: "=1, Left cue rewarded; =2, Right rewarded; =0, both sides rewarded/CS+."
+- path: log.version.variables.stage
+  destination: settings
+  name: "version.variables.stage"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.startPosition
+  destination: settings
+  name: "version.variables.startPosition"
+  dtype: text
+  shape: []
+  description: "Set in protocol as scalar specifying Y-position; append x, z, and theta based on maze & location."
+- path: log.version.variables.tactileRule
+  destination: settings
+  name: "version.variables.tactileRule"
+  dtype: text
+  shape: []
+  description: "Tactile cues = rewarding."
+- path: log.version.variables.targetNumTrials
+  destination: settings
+  name: "version.variables.targetNumTrials"
+  dtype: text
+  shape: []
+  description: "Number of trials to pre-generate per session."
+- path: log.version.variables.teleportToChoice
+  destination: settings
+  name: "version.variables.teleportToChoice"
+  dtype: text
+  shape: []
+  description: "Trial will start and immediately be transported to choice zone."
+- path: log.version.variables.timeLimit
+  destination: settings
+  name: "version.variables.timeLimit"
+  dtype: text
+  shape: []
+  description: "Time limit for session in minutes, or inf."
+- path: log.version.variables.towHeight
+  destination: settings
+  name: "version.variables.towHeight"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.trialDispersion
+  destination: settings
+  name: "version.variables.trialDispersion"
+  dtype: text
+  shape: []
+  description: "The amount of stagger (in units of number of trials) when mixing trial sequences."
+- path: log.version.variables.trialDuplication
+  destination: settings
+  name: "version.variables.trialDuplication"
+  dtype: text
+  shape: []
+  description: "Duplication factor for subset of per-session trials that have duplicates."
+- path: log.version.variables.trialDuplicationFactor
+  destination: settings
+  name: "version.variables.trialDuplicationFactor"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.trialEndPauseDuration
+  destination: settings
+  name: "version.variables.trialEndPauseDuration"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.turnFloor
+  destination: settings
+  name: "version.variables.turnFloor"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.visualRule
+  destination: settings
+  name: "version.variables.visualRule"
+  dtype: text
+  shape: []
+  description: "Visual cues = rewarding."
+- path: log.version.variables.wArm
+  destination: settings
+  name: "version.variables.wArm"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wArm_lMemory
+  destination: settings
+  name: "version.variables.wArm_lMemory"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wChoice
+  destination: settings
+  name: "version.variables.wChoice"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wEntryFixationSlit
+  destination: settings
+  name: "version.variables.wEntryFixationSlit"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wMaze
+  destination: settings
+  name: "version.variables.wMaze"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wTrack
+  destination: settings
+  name: "version.variables.wTrack"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.waRM
+  destination: settings
+  name: "version.variables.waRM"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.wallHeight
+  destination: settings
+  name: "version.variables.wallHeight"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.worldXRange
+  destination: settings
+  name: "version.variables.worldXRange"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.worldYRange
+  destination: settings
+  name: "version.variables.worldYRange"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.xCue
+  destination: settings
+  name: "version.variables.xCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.xHint
+  destination: settings
+  name: "version.variables.xHint"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.yCue
+  destination: settings
+  name: "version.variables.yCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.variables.yCuelCue
+  destination: settings
+  name: "version.variables.yCuelCue"
+  dtype: text
+  shape: []
+  description: "ViRMEn experiment variable (MATLAB expression string) - semantics task-specific."
+- path: log.version.worlds
+  destination: structural
+  description: "ViRMEn worlds of the experiment."
+- path: log.version.worlds.name
+  destination: settings
+  name: "version.worlds.name"
+  dtype: text
+  shape: []
+  description: "ViRMEn world name."
+- path: log.version.worlds.objects
+  destination: drop
+  description: "Sorted list of ViRMEn object names in the world."
+  notes: "GUI, roster, debug or in-progress state, not part of the session record (issue #3)."

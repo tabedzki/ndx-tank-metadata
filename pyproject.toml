@@ -4,10 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-tank-metadata"
-dynamic = ["version"]
+version = "0.4.1"
 description = "NWB:N extension for storing metadata for Tank lab"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 authors = [
     { name = "Szonja Weigl"},
     { name = "Luiz Tauffer" },
@@ -15,52 +16,43 @@ authors = [
     { name = "Christian Tabedzki", email = "ct5868@princeton.edu"  },
 ]
 dependencies = [
-    "pynwb>=3.0.0",
+    "hdmf>=6.2.0",
+    "pynwb>=4.2.0",
+    "ruamel.yaml",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: BSD License",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
     "Operating System :: OS Independent",
 ]
 
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [project.urls]
 Homepage = "https://github.com/catalystneuro/ndx-tank-metadata"
 
-[tool.hatch.version]
-path = "src/spec/create_extension_spec.py"
-
+# Ship the root spec inside the package without maintaining a second source copy.
 [tool.hatch.build.targets.wheel]
-packages = [
-    "src/pynwb/ndx_tank_metadata",
-]
+packages = ["src/pynwb/ndx_tank_metadata", "spec"]
+
+[tool.hatch.build.targets.wheel.sources]
+"spec" = "ndx_tank_metadata/spec"
 
 [tool.hatch.build.targets.sdist]
-include = [
-    "/src/pynwb",
-    "/spec/*.yaml",
-    "pyproject.toml",
-    "README.md",
-    "LICENSE"
-]
-
-[tool.hatch.envs.default]
-installer = "uv"
+exclude = [".git*", "src/matnwb"]
 
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
+    "tomli>=2; python_version < '3.11'",
 ]
 
-[tool.hatch.build.hooks.custom]
-path = "hatch_build.py"
-module = "hatch_build"
+[tool.pytest.ini_options]
+markers = ["packaging: builds and installs release artifacts in isolated Python 3.13 environments"]

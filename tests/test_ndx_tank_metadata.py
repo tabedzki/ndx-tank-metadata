@@ -15,10 +15,10 @@ class LabMetaDataExtensionTest(unittest.TestCase):
         # Add rig information
         rig = {
             "name": "rig",
-            "rig": "VRTrain6",
-            "simulationMode": 0,
-            "hasDAQ": 1,
-            "hasSyncComm": 0,
+            "rig_type": "miniVR",
+            "simulationMode": False,
+            "hasDAQ": True,
+            "hasSyncComm": False,
             "minIterationDT": 0.01,
             "arduinoPort": "COM5",
             "sensorDotsPerRev": [1967.6, 1967.6, 1967.6, 1967.6],
@@ -38,7 +38,6 @@ class LabMetaDataExtensionTest(unittest.TestCase):
             "laserChannel": 1,
             "rightPuffChannel": 2,
             "leftPuffChannel": 3,
-            "webcam_name": "Live! Cam Sync HD VF0770",
         }
         rig_extension = RigExtension(**rig)
 
@@ -46,7 +45,7 @@ class LabMetaDataExtensionTest(unittest.TestCase):
         maze_extension = MazeExtension(
             name="mazes", description="description of the mazes"
         )
-        mazes_dict = {k: "1" for k in maze_extension.mazes_attr}
+        mazes_dict = {"world": 1, "lStart": 30.0, "lCue": 200.0, "lMemory": 100.0, "maxBias": 0.2}
         maze_extension.add_row(**mazes_dict)
 
         # Creates LabMetaData container
@@ -60,7 +59,7 @@ class LabMetaDataExtensionTest(unittest.TestCase):
             "commit_id": "test",
             "location": "test",
             "num_trials": 245,
-            "session_end_time": datetime.utcnow().isoformat(),
+            "session_end_time": datetime.now(timezone.utc),
             "rig": rig_extension,
             "mazes": maze_extension
         }

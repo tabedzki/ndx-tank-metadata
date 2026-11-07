@@ -3,44 +3,85 @@ groups:
   neurodata_type_inc: LabMetaData
   doc: type for storing metadata for Brody and Tank labs
   attributes:
-  - name: experiment_name
+  - name: session_performance
+    dtype: float64
+    doc: 'Percentage of correct responses, computed by the converter. Unit: %.'
+    required: false
+  - name: experiment
     dtype: text
-    doc: name of experiment run
-  - name: world_file_name
-    dtype: text
-    doc: name of world file run
+    doc: Path of the ViRMEn experiment world file.
+    required: false
   - name: protocol_name
     dtype: text
-    doc: name of protocol run
+    doc: Name of protocol run.
   - name: stimulus_bank_path
     dtype: text
-    doc: path of stimulus bank file
-  - name: commit_id
+    doc: Path of the stimulus bank file; left out when the session has none.
+    required: false
+  - name: stimulusSet
+    dtype: int32
+    doc: Index of stimulus set within the bank.
+    required: false
+  - name: virmenSensor
     dtype: text
-    doc: Commit id for session run
-  - name: location
-    dtype: text
-    doc: Name of rig where session was run
-  - name: session_performance
-    dtype: float
-    doc: Performance of correct responses in %
+    doc: 'Rule that maps ball motion to VR motion (MovementSensor enum). Codes: BottomVelocity=bottom
+      sensor, velocity, BottomPosition=bottom sensor, position, FrontVelocity=front
+      sensor, velocity, ViewAngleLocked=view angle locked.'
+    required: false
+  - name: consecutiveViolationTrials
+    dtype: int32
+    doc: Running count of consecutive violation trials (live stats)
+    required: false
+  - name: initialTimestamp
+    dtype: isodatetime
+    doc: Clock time when the ViRMEn engine started.
+    required: false
+  - name: num_trials
+    dtype: int32
+    doc: Number of trials of session (count of logEnd calls)
+  - name: numTrialsTry
+    dtype: int32
+    dims:
+    - dim_0
+    shape:
+    - null
+    doc: Number of trials for each try (restart) of the session.
     required: false
   - name: session_end_time
-    dtype: text
-    doc: Datetime when session ended
-  - name: num_trials
-    dtype: int
-    doc: Number of trials during the session
+    dtype: isodatetime
+    doc: Datetime when the session ended.
   - name: timeElapsedFirstTrial
-    dtype: float
-    doc: Lapsed time from starting session to initialization and appearance of world
-      for first trial
+    dtype: float64
+    doc: 'timeElapsed from ViRMEn engine start to first iteration (t=0 trial) Unit:
+      s.'
     required: false
   - name: timeElapsedVideoStart
-    dtype: float
-    doc: Lapsed time between starting session and beginning of video acquisition;
-      used for Sychronizing face video and Virmen streams
+    dtype: float64
+    doc: 'timeElapsed from ViRMEn engine start to video capture start; for syncing
+      face video and ViRMEn. Unit: s.'
     required: false
+  - name: experiment_name
+    dtype: text
+    doc: Name of experiment run.
+  - name: codeVersion
+    dtype: float64
+    doc: Code version number from vr.exper.variables.codeVersion (versionInfo)
+    required: false
+  - name: mazeVersion
+    dtype: float64
+    doc: Maze version number from vr.exper.variables.mazeVersion (versionInfo)
+    required: false
+  - name: world_file_name
+    dtype: text
+    doc: Name of world file run.
+  - name: commit_id
+    dtype: text
+    doc: Commit of the ViRMEn repository during the session; empty in one surveyed
+      log.
+    required: false
+  - name: location
+    dtype: text
+    doc: Name of the rig where the session ran.
   groups:
   - name: rig
     neurodata_type_inc: RigExtension
@@ -48,207 +89,1207 @@ groups:
   - name: mazes
     neurodata_type_inc: MazeExtension
     doc: type for storing maze information
+  - name: animal
+    neurodata_type_inc: AnimalSettings
+    doc: settings of the animal
+    quantity: '?'
+  - name: settings
+    neurodata_type_inc: VirmenSettings
+    doc: other ViRMEn settings
+    quantity: '?'
+  - name: stimulus_pairs
+    neurodata_type_inc: StimulusPairs
+    doc: stimulus pairs (PWM task)
+    quantity: '?'
 - neurodata_type_def: RigExtension
   neurodata_type_inc: LabMetaData
   doc: type for storing rig information
   attributes:
-  - name: rig
-    dtype: text
-    doc: miniVR or normalVR (projection is changed based on rig type)
-    required: false
-  - name: simulationMode
-    dtype: int
-    doc: true to run in simulation mode with human input via keyboard
-    required: false
-  - name: hasDAQ
-    dtype: int
-    doc: false for testing on laptop
-    required: false
-  - name: hasSyncComm
-    dtype: int
-    doc: true if digital communications should be used for synchronization (ScanImage)
-    required: false
-  - name: minIterationDT
-    dtype: float
-    doc: Minimum expected ViRMEn frame rate in seconds
-    required: false
   - name: arduinoPort
     dtype: text
-    doc: Arduino port as seen in the Windows Device Manager
-    required: false
-  - name: sensorDotsPerRev
-    dtype: float
-    shape:
-    - null
-    doc: Sensor dots per ball revolution, obtained using the calibrateBall script
+    doc: Arduino port as seen in the Windows Device Manager.
     required: false
   - name: ballCircumference
-    dtype: float
-    doc: in cm
-    required: false
-  - name: toroidXFormP1
-    dtype: float
-    doc: p1 parameter (slope) from poly1 fit of toroidal screen transformation
-    required: false
-  - name: toroidXFormP2
-    dtype: float
-    doc: p2 parameter (offset) from poly1 fit of toroidal screen transformation
+    dtype: float64
+    doc: 'Circumference of the ball. Unit: cm.'
     required: false
   - name: colorAdjustment
-    dtype: float
+    dtype: float64
+    dims:
+    - dim_0
     shape:
-    - null
-    doc: '[R; G; B] scale factor for projector display'
+    - 3
+    doc: '[R; G; B] scale factor for projector display.'
     required: false
-  - name: soundAdjustment
-    dtype: float
-    doc: Scale factor for sound volume
+  - name: hasDAQ
+    dtype: bool
+    doc: Whether the rig has a DAQ; false when testing on a laptop.
     required: false
-  - name: nidaqDevice
-    dtype: int
-    doc: NI-DAQ device identifier
-    required: false
-  - name: nidaqPort
-    dtype: int
-    doc: NI-DAQ port number
-    required: false
-  - name: nidaqLines
-    dtype: int
-    shape:
-    - null
-    doc: NI-DAQ lines for the specified port
-    required: false
-  - name: syncClockChannel
-    dtype: int
-    doc: NI-DAQ digital line for I2C clock signal
-    required: false
-  - name: syncDataChannel
-    dtype: int
-    doc: NI-DAQ digital line for I2C data signal
-    required: false
-  - name: rewardChannel
-    dtype: int
-    doc: NI-DAQ digital line for turning on/off the solenoid valve
-    required: false
-  - name: rewardSize
-    dtype: float
-    doc: in mL
-    required: false
-  - name: rewardDuration
-    dtype: float
-    doc: Valve opening duration (in seconds) for 4uL reward
+  - name: hasSyncComm
+    dtype: bool
+    doc: Whether digital communications are used for synchronization (ScanImage).
     required: false
   - name: laserChannel
-    dtype: int
-    doc: NI-DAQ digital line for turning on/off the laser
-    required: false
-  - name: rightPuffChannel
-    dtype: int
-    doc: NI-DAQ digital line for left air puff solenoid
+    dtype: int32
+    doc: NI-DAQ digital line for turning on/off the laser.
     required: false
   - name: leftPuffChannel
-    dtype: int
-    doc: NI-DAQ digital line for right air puff solenoid
+    dtype: int32
+    doc: NI-DAQ digital line for the left air puff solenoid.
     required: false
-  - name: webcam_name
+  - name: minIterationDT
+    dtype: float64
+    doc: 'Minimum expected duration of one ViRMEn iteration. Unit: s.'
+    required: false
+  - name: nidaqDevice
+    dtype: int32
+    doc: NI-DAQ device identifier.
+    required: false
+  - name: nidaqLines
+    dtype: int32
+    dims:
+    - dim_0
+    shape:
+    - null
+    doc: NI-DAQ lines for the specified port.
+    required: false
+  - name: nidaqPort
+    dtype: int32
+    doc: NI-DAQ port number.
+    required: false
+  - name: proj_param_Rs
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_hrescaling
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_hshift
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_r
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_vrescaling
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_vshift
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_xOm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_xP1o
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_xsm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_yOm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_yP1o
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_ysm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_zOm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_zP1o
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: proj_param_zsm
+    dtype: float64
+    doc: Mini VR spherical-mirror projection geometry parameter.
+    required: false
+  - name: puffDuration
+    dtype: float64
+    doc: Duration of the air puff.
+    required: false
+  - name: rewardChannel
+    dtype: int32
+    doc: NI-DAQ digital line for turning on/off the solenoid valve.
+    required: false
+  - name: rewardDuration
+    dtype: float64
+    doc: 'Valve opening duration for a 4 uL reward. Unit: s.'
+    required: false
+  - name: rewardSize
+    dtype: float64
+    doc: 'Size of one reward. Unit: mL.'
+    required: false
+  - name: rig_type
     dtype: text
-    doc: Webcam name
+    doc: miniVR or normalVR (the projection depends on the rig type).
+    required: false
+  - name: rightPuffChannel
+    dtype: int32
+    doc: NI-DAQ digital line for the right air puff solenoid.
+    required: false
+  - name: sensorDotsPerRev
+    dtype: float64
+    dims:
+    - dim_0
+    shape:
+    - null
+    doc: Sensor dots per ball revolution, per MovementSensor (calibrateBall)
+    required: false
+  - name: simulationMode
+    dtype: bool
+    doc: Whether the session ran in simulation mode, with human input via keyboard.
+    required: false
+  - name: soundAdjustment
+    dtype: float64
+    doc: Scale factor for sound volume.
+    required: false
+  - name: squal
+    dtype: float64
+    doc: Mean ball-sensor surface quality (squal) measured at session start.
+    required: false
+  - name: syncClockChannel
+    dtype: int32
+    doc: NI-DAQ digital line for I2C clock signal.
+    required: false
+  - name: syncDataChannel
+    dtype: int32
+    doc: NI-DAQ digital line for I2C data signal.
+    required: false
+  - name: toroidXFormP1
+    dtype: float64
+    doc: p1 parameter (slope) from poly1 fit of toroidal screen transformation.
+    required: false
+  - name: toroidXFormP2
+    dtype: float64
+    doc: p2 parameter (offset) from poly1 fit of toroidal screen transformation.
+    required: false
+- neurodata_type_def: AnimalSettings
+  neurodata_type_inc: LabMetaData
+  doc: settings of the animal from the training GUI
+  attributes:
+  - name: autoAdvance
+    dtype: bool
+    doc: Whether the animal is automatically advanced through levels.
+    required: false
+  - name: behaviorVideo
+    dtype: int8
+    doc: Index into the training GUI's list of behavior video presets.
+    required: false
+  - name: mainDrawMethod
+    dtype: text
+    doc: Method for drawing main trials, for example TRIAL_DRAWING.
+    required: false
+  - name: mainDrawMethodParameter
+    dtype: float64
+    doc: Parameter of the method for drawing main trials.
+    required: false
+  - name: mainMazeID
+    dtype: int32
+    doc: Current main maze (training level) for the animal.
+    required: false
+  - name: manipulationType
+    dtype: text
+    doc: Manipulation type ('none', 'optogenetics', ...)
+    required: false
+  - name: motionBlurRange
+    dtype: float64
+    dims:
+    - dim_0
+    shape:
+    - 2
+    doc: Motion-blur range applied to cues.
+    required: false
+  - name: motorBias
+    dtype: bool
+    doc: Whether motor-bias correction is applied.
+    required: false
+  - name: pulseDelayStim
+    dtype: float64
+    dims:
+    - dim_0
+    shape:
+    - 2
+    doc: Stimulation pulse as [delay, width].
+    required: false
+  - name: pupillometryVideo
+    dtype: int8
+    doc: Index into the training GUI's list of pupillometry video presets.
+    required: false
+  - name: rewardFactor
+    dtype: float64
+    dims:
+    - dim_0
+    - dim_1
+    shape:
+    - 2
+    - null
+    doc: Reward multiplier table, with one column per level.
+    required: false
+  - name: subtask
+    dtype: text
+    doc: Sub-task label.
+    required: false
+  - name: virmenDisplacementPerCm
+    dtype: float64
+    doc: VR displacement gain per cm of ball motion.
+    required: false
+  - name: virmenRotationsPerRev
+    dtype: float64
+    doc: View-angle scale factor (NaN default)
+    required: false
+  - name: warmupDrawMethod
+    dtype: text
+    doc: Method for drawing warmup trials, for example TRIAL_DRAWING.
+    required: false
+  - name: warmupDrawMethodParameter
+    dtype: float64
+    doc: Parameter of the method for drawing warmup trials.
+    required: false
+  - name: waterAlloc
+    dtype: float64
+    doc: 'Daily water allocation. Unit: mL.'
     required: false
 - neurodata_type_def: MazeExtension
   neurodata_type_inc: DynamicTable
-  doc: type for storing maze information
-  attributes:
-  - name: StartCycle
-    dtype: int
-    doc: PWM and spatfreq. The spatial frequency of the first stimulus shown to the
-      mouse.
-    required: false
+  doc: type for storing maze information, one row per maze
+  datasets:
+  - name: blockPerform
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: performance threshold to go into easy block.
+    quantity: '?'
+  - name: criteriaNTrials
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Number of trials over which performance criteria are evaluated.
+    quantity: '?'
+  - name: easyBlock
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: maze ID of easy block (NaN = none)
+    quantity: '?'
+  - name: easyBlock_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into easyBlock, which has a variable number of values per row.
+    quantity: '?'
+  - name: easyBlockNTrials
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: number of trials in easy block.
+    quantity: '?'
+  - name: easyBlockPerformanceDemote
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Performance threshold for demotion into easier easy block.
+    quantity: '?'
+  - name: easyBlockPerformanceDemote_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into easyBlockPerformanceDemote, which has a variable number of values
+      per row.
+    quantity: '?'
+  - name: easyBlockPerformancePromote
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Performance threshold for promotion back to main maze or more difficult easy
+      block.
+    quantity: '?'
+  - name: easyBlockPerformancePromote_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into easyBlockPerformancePromote, which has a variable number of values
+      per row.
+    quantity: '?'
+  - name: maxBias
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Maximum side bias permitted to advance.
+    quantity: '?'
+  - name: numBlockTrials
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: number of trials for sliding window performance.
+    quantity: '?'
+  - name: numRewardsPerMin
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Number of reward required per minute to be considered maintaining “good”
+      performance.
+    quantity: '?'
+  - name: numSessions
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Minimum number of sessions at this level before advancing.
+    quantity: '?'
+  - name: numTrials
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Minimum number of trials to advance level.
+    quantity: '?'
+  - name: numTrialsPerMin
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Minimum trials per minute to advance.
+    quantity: '?'
+  - name: performance
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Performance threshold to advance.
+    quantity: '?'
+  - name: sublevelDemotion
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether the level demotes to a lower sublevel. Codes: 0=no sublevel demotion,
+      1=sublevel demotion.'
+    quantity: '?'
+  - name: warmupBias
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Bias threshold to finish warmup.
+    quantity: '?'
+  - name: warmupBias_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into warmupBias, which has a variable number of values per row.
+    quantity: '?'
+  - name: warmupMaze
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Maze ID(s) used for warmup.
+    quantity: '?'
+  - name: warmupMaze_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into warmupMaze, which has a variable number of values per row.
+    quantity: '?'
+  - name: warmupMotor
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Motor (excess travel) threshold for warmup.
+    quantity: '?'
+  - name: warmupMotor_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into warmupMotor, which has a variable number of values per row.
+    quantity: '?'
+  - name: warmupNTrials
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Number of warmup trials (per warmup maze); [] if none, vector if several
+      warmups.
+    quantity: '?'
+  - name: warmupNTrials_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into warmupNTrials, which has a variable number of values per row.
+    quantity: '?'
+  - name: warmupPerform
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Performance threshold to finish warmup.
+    quantity: '?'
+  - name: warmupPerform_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into warmupPerform, which has a variable number of values per row.
+    quantity: '?'
+  - name: turnHint_Mem
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether the turn hint is visible in the memory region for this level. Codes:
+      -1=not specified, 0=hidden, 1=visible.'
+    quantity: '?'
+  - name: turnHint_Puff
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Whether the turn hint is visible in the puff region for this level.
+    quantity: '?'
+  - name: lCue
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Length of the cue segment. Unit: cm.'
+    quantity: '?'
+  - name: lMemory
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Length of the memory (delay) segment. Unit: cm.'
+    quantity: '?'
+  - name: lStart
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Length of the start segment. Unit: cm.'
+    quantity: '?'
+  - name: tri_turnHint
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Turn hint visibility: 0 hidden; 1 visible; above 2, visible until this distance
+      from the end of the stem; below 0, hidden until the absolute value of this distance.
+      Unit: cm when it is a distance.'
+    quantity: '?'
+  - name: world
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Index of the ViRMEn world used by this maze level.
+    quantity: '?'
+- neurodata_type_def: VirmenTrials
+  neurodata_type_inc: TimeIntervals
+  doc: ViRMEn trials, one row per trial
+  datasets:
+  - name: stimulus_pair
+    neurodata_type_inc: DynamicTableRegion
+    doc: Row of StimulusPairs shown on this trial.
+    quantity: '?'
+  - name: CS_isRewarded
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Whether the conditioned stimulus is rewarded.
+    quantity: '?'
+  - name: CS_modality
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Sensory modality of the conditioned stimulus. Codes: visual=visual, tactile=tactile,
+      none=no stimulus presented.'
+    quantity: '?'
+  - name: CS_position
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Positions of the conditioned stimulus along the track. Unit: cm.'
+    quantity: '?'
+  - name: CS_position_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into CS_position, which has a variable number of values per row.
+    quantity: '?'
+  - name: CS_presented
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Whether the conditioned stimulus was presented.
+    quantity: '?'
+  - name: CS_side
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Side of the conditioned stimulus. Codes: L=left, R=right, none=no stimulus
+      presented.'
+    quantity: '?'
   - name: EndCycle
-    dtype: int
-    doc: PWM. The spatial frequency of the second stimulus shown to the mouse.
-    required: false
-  - name: rule
-    dtype: utf-8
-    doc: PWM. Specifies what the mouse should do to receive reward. Can be 'StartCycle
-      < EndCycle Left' or 'StartCycle < EndCycle Right'
-    required: false
-  - name: baseCycles
-    dtype: int
-    shape:
-    - null
-    doc: PWM. The base set of spatial frequencies from which StartCycle and EndCycle
-      can be drawn.
-    required: false
-  - name: trialNum
-    dtype: int
-    doc: PWM. The trial number (not reliable, bugged).
-    required: false
-  - name: hitHistory
-    dtype: bool
-    doc: PWM. Boolean vector tracking whether the mouse got the trial correct or not.
-    required: false
-  - name: classHistory
-    dtype: int
-    shape:
-    - null
-    doc: PWM. Vector tracking which (StartCycle,EndCycle) stimulus pair was shown
-      to the mouse, with each value being a row index into stimulusTable.
-    required: false
-  - name: multibiasBeta
-    dtype: float
-    doc: PWM. Scalar value indicating the strength of the multibias.
-    required: false
-  - name: multibiasTau
-    dtype: float
-    doc: PWM. Scalar value indicating the history dependence of the multibias.
-    required: false
-  - name: pairNum
-    dtype: int
-    doc: PWM. Integer value indicating which stimulus pair was shown, is a row index
-      into stimulusTable.
-    required: false
-  - name: wallGuide
-    dtype: bool
-    doc: PWM. Boolean, whether wallGuides were active or not on this trial.
-    required: false
-  - name: alpha_plus
-    dtype: float
-    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
-      trigger forward.
-    required: false
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: The spatial frequency of the second stimulus shown to the mouse.
+    quantity: '?'
+  - name: LaserTrialType
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Laser epoch type of the trial. Codes: 0=default, 1=laser during cue, 2=laser
+      during outcome.'
+    quantity: '?'
+  - name: P_clamp
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Probability of a viewangle-clamp trial -- defaults to 20.
+    quantity: '?'
+  - name: StartCycle
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: The spatial frequency of the first stimulus shown to the mouse.
+    quantity: '?'
+  - name: TTL_stamp
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'TTL times sent during the trial, on the elapsed-time clock. Unit: s.'
+    quantity: '?'
+  - name: TTL_stamp_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into TTL_stamp, which has a variable number of values per row.
+    quantity: '?'
   - name: alpha_minus
-    dtype: float
-    doc: PWM. Scalar, how much to multiply step_size by when moving the moon beacon
-      trigger back.
-    required: false
-  - name: moonBeaconEnabled
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Scalar, how much to multiply step_size by when moving the moon beacon trigger
+      back.
+    quantity: '?'
+  - name: alpha_plus
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Scalar, how much to multiply step_size by when moving the moon beacon trigger
+      forward.
+    quantity: '?'
+  - name: baseCycles
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: The base set of spatial frequencies from which StartCycle and EndCycle can
+      be drawn.
+    quantity: '?'
+  - name: baseCycles_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into baseCycles, which has a variable number of values per row.
+    quantity: '?'
+  - name: choice
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Choice the animal made in the trial. Codes: L=left, R=right, nil=no choice
+      (trial violation).'
+    quantity: '?'
+  - name: counter_licks_iteration
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Lick counter readings: the iteration of each reading, and the new lick count.'
+    quantity: '?'
+  - name: counter_licks_iteration_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into counter_licks_iteration, which has a variable number of values
+      per row.
+    quantity: '?'
+  - name: counter_licks_value
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Lick counter readings: the iteration of each reading, and the new lick count.'
+    quantity: '?'
+  - name: counter_licks_value_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into counter_licks_value, which has a variable number of values per
+      row.
+    quantity: '?'
+  - name: cueCombo_left
+    neurodata_type_inc: VectorData
     dtype: bool
-    doc: PWM. Boolean, whether the moon beacon is enabled or not.
-    required: false
-  - name: moonBeaconPos
-    dtype: float
-    doc: PWM. Scalar [cm], current position of the moon beacon trigger relative to
-      the moonBeaconTrigger.
-    required: false
-  - name: moonBeaconTrigger
-    dtype: utf-8
-    doc: PWM. String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'.
-    required: false
-  - name: step_size
-    dtype: float
-    doc: PWM. Scalar [cm], how much to move the moon beacon triggerpoint on each trial.
-    required: false
-  - name: lsrON
-    dtype: int
-    doc: pro/anti. whether the laser is on for a given trial, 0=laser off, 1=laser
-      on
-    required: false
-  - name: moonDistHint
-    dtype: float
-    doc: pro/anti. distance from start at which moon beacon appears
-    required: false
+    doc: Whether each cue slot holds a cue on the left and on the right.
+    quantity: '?'
+  - name: cueCombo_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueCombo_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: cueCombo_right
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Whether each cue slot holds a cue on the left and on the right.
+    quantity: '?'
+  - name: cueCombo_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueCombo_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: cueOffset_left
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iteration # when cues disappeared in trial. Unit: iterations.'
+    quantity: '?'
+  - name: cueOffset_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueOffset_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: cueOffset_right
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iteration # when cues disappeared in trial. Unit: iterations.'
+    quantity: '?'
+  - name: cueOffset_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueOffset_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: cueOnset_left
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iteration # when cues appeared in trial. Unit: iterations.'
+    quantity: '?'
+  - name: cueOnset_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueOnset_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: cueOnset_right
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iteration # when cues appeared in trial. Unit: iterations.'
+    quantity: '?'
+  - name: cueOnset_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cueOnset_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: cuePos_left
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Position in maze for each cue. Unit: cm.'
+    quantity: '?'
+  - name: cuePos_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cuePos_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: cuePos_right
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Position in maze for each cue. Unit: cm.'
+    quantity: '?'
+  - name: cuePos_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into cuePos_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: currentSetpoint
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Current setpoint of the trial. Unit: A.'
+    quantity: '?'
+  - name: duration
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Duration in seconds of entire trial. Unit: s.'
+    quantity: '?'
+  - name: excessTravel
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: parameter that measures extra distance run by subject.
+    quantity: '?'
+  - name: finalchoice
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Final choice in the trial, for example after retries. Codes: L=left, R=right,
+      nil=no choice.'
+    quantity: '?'
   - name: forcedChoice
-    dtype: int
-    doc: spatfreq. whether a trial is a forced choice L-maze environment, 0=T-maze,
-      1=L-maze
-    required: false
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether a trial is a forced choice L-maze environment, 0=T-maze, 1=L-maze.
+      Codes: 0=T-maze, 1=L-maze (forced choice).'
+    quantity: '?'
+  - name: iArmEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration # when subject entered arm region. Unit: iterations.'
+    quantity: '?'
+  - name: iBlank
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration # when screen is turned off. Unit: iterations.'
+    quantity: '?'
+  - name: iChoice
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration of choice onset. Unit: iterations.'
+    quantity: '?'
+  - name: iChoiceEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration of entry into choice region. Unit: iterations.'
+    quantity: '?'
+  - name: iCueEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration # when subject entered cue region. Unit: iterations.'
+    quantity: '?'
+  - name: iLaserOff
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Laser command offset frame: the iteration of the command transition, not
+      delivered light; 0 if none. Unit: iterations.'
+    quantity: '?'
+  - name: iLaserOn
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Laser command onset frame: the iteration of the command transition, not
+      delivered light; 0 if none. Unit: iterations.'
+    quantity: '?'
+  - name: iMemEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration # when subject entered memory region. Unit: iterations.'
+    quantity: '?'
+  - name: iOutcome
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iteration of outcome onset. Unit: iterations.'
+    quantity: '?'
+  - name: iStartEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration when trial started / subject entered start region. Unit: iterations.'
+    quantity: '?'
+  - name: iTurnEntry
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'iteration # when subject entered turn region. Unit: iterations.'
+    quantity: '?'
+  - name: iterations
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: '# of iterations (frames) for entire trial. Unit: iterations.'
+    quantity: '?'
+  - name: landmarkOnset
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iterations of landmark onset: one vector per landmark type (doorstop task).
+      Unit: iterations.'
+    quantity: '?'
+  - name: landmarkOnset_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into landmarkOnset, which has a variable number of values per row.
+    quantity: '?'
+  - name: landmarkOnset_index_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into landmarkOnset_index, which has a variable number of values per
+      row.
+    quantity: '?'
+  - name: licks_iteration
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Licks in the trial: the iteration of each lick, and its lick port or count
+      value.'
+    quantity: '?'
+  - name: licks_iteration_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into licks_iteration, which has a variable number of values per row.
+    quantity: '?'
+  - name: licks_value
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Licks in the trial: the iteration of each lick, and its lick port or count
+      value.'
+    quantity: '?'
+  - name: licks_value_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into licks_value, which has a variable number of values per row.
+    quantity: '?'
+  - name: lsrON
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether the laser is on for a given trial, 0=laser off, 1=laser on. Codes:
+      0=laser off, 1=laser on.'
+    quantity: '?'
+  - name: modalityRule
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: '=1, Tactile Rule; =2, Visual; =0, both modalities rewarded/CS+. Codes: 0=both
+      modalities rewarded, 1=tactile rule, 2=visual rule.'
+    quantity: '?'
+  - name: moonBeaconEnabled
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Boolean, whether the moon beacon is enabled or not.
+    quantity: '?'
+  - name: moonBeaconPos
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Scalar [cm], current position of the moon beacon trigger relative to the
+      moonBeaconTrigger. Unit: cm.'
+    quantity: '?'
+  - name: moonBeaconShown
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Whether the moon beacon has been shown in this trial.
+    quantity: '?'
+  - name: moonBeaconTrigger
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: "String indicating the trigger point for the moon. Can be 'Sa' or 'Sb'. Codes:
+      Sa=first stimulus, Sb=second stimulus."
+    quantity: '?'
+  - name: moonDistHint
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Distance from start at which moon beacon appears. Unit: cm.'
+    quantity: '?'
+  - name: multibiasBeta
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Scalar value indicating the strength of the multibias.
+    quantity: '?'
+  - name: multibiasTau
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Scalar value indicating the history dependence of the multibias.
+    quantity: '?'
+  - name: pDistractorTrials
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'proportion of trials including distractor cues (tactile: towers, visual:
+      puffs)'
+    quantity: '?'
+  - name: pairNum
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Integer value indicating which stimulus pair was shown, is a row index into
+      stimulusTable.
+    quantity: '?'
+  - name: probeTrial
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether the trial is a probe trial. Codes: 0=regular trial, 1=probe trial.'
+    quantity: '?'
+  - name: puffOnset_left
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iterations of air puff onset, on each side. Unit: iterations.'
+    quantity: '?'
+  - name: puffOnset_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into puffOnset_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: puffOnset_right
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Iterations of air puff onset, on each side. Unit: iterations.'
+    quantity: '?'
+  - name: puffOnset_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into puffOnset_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: puffOpto
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Opto on during puff (tactile) cue region. Codes: 0=off, 1=on.'
+    quantity: '?'
+  - name: puffPos_left
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Y positions of the tactile cues (air puffs), on each side. Unit: cm.'
+    quantity: '?'
+  - name: puffPos_left_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into puffPos_left, which has a variable number of values per row.
+    quantity: '?'
+  - name: puffPos_right
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Y positions of the tactile cues (air puffs), on each side. Unit: cm.'
+    quantity: '?'
+  - name: puffPos_right_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into puffPos_right, which has a variable number of values per row.
+    quantity: '?'
+  - name: rewardBlockIdx
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Index into variable-reward block schedule (varRewardBlocks)
+    quantity: '?'
+  - name: rewardDelay
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Time interval between CS+ and reward. Unit: s.'
+    quantity: '?'
+  - name: rewardFactor
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Reward factor recorded for delivery in the reward state; 0 when no reward
+      is due.
+    quantity: '?'
+  - name: rewardScale
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Multiplier of reward for each correct trial.
+    quantity: '?'
+  - name: rule
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: Specifies what the mouse should do to receive reward. Can be "StartCycle
+      < EndCycle Left" or "StartCycle < EndCycle Right".
+    quantity: '?'
+  - name: sideRule
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: '=1, Left cue rewarded; =2, Right rewarded; =0, both sides rewarded/CS+.
+      Codes: 0=both sides rewarded, 1=left cue rewarded, 2=right cue rewarded.'
+    quantity: '?'
+  - name: startPosition
+    neurodata_type_inc: VectorData
+    dtype: float32
+    dims:
+    - num_rows
+    - dim_0
+    shape:
+    - null
+    - 4
+    doc: Start position of the trial as [x, y, z, theta].
+    quantity: '?'
+  - name: step_size
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: 'Scalar [cm], how much to move the moon beacon triggerpoint on each trial.
+      Unit: cm.'
+    quantity: '?'
+  - name: Hits
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Cumulative hit rate of each stimulus pair at this trial; NaN before a pair
+      has been shown.
+    quantity: '?'
+  - name: Hits_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into Hits, which has a variable number of values per row.
+    quantity: '?'
+  - name: NTotal
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Number of times each pair has been shown at this trial.
+    quantity: '?'
+  - name: NTotal_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into NTotal, which has a variable number of values per row.
+    quantity: '?'
+  - name: PostProb
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Posterior probability of showing each pair at this trial.
+    quantity: '?'
+  - name: PostProb_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into PostProb, which has a variable number of values per row.
+    quantity: '?'
+  - name: tactileRule
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether tactile cues are rewarding. Codes: 0=tactile cues not rewarding,
+      1=tactile cues rewarding.'
+    quantity: '?'
+  - name: towerOpto
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Opto on during tower (visual) cue region. Codes: 0=off, 1=on.'
+    quantity: '?'
+  - name: trialDifficultyType
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: Difficulty category of trial.
+    quantity: '?'
+  - name: trialID
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Index of the stimulus train drawn from the stimulus bank.
+    quantity: '?'
+  - name: trialProb
+    neurodata_type_inc: VectorData
+    dtype: float32
+    dims:
+    - num_rows
+    - dim_0
+    shape:
+    - null
+    - 2
+    doc: Probability that the trial was drawn as [left, right], from the trial-drawing
+      method.
+    quantity: '?'
+  - name: trialType
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Rewarded side of the trial. Codes: L=left, R=right.'
+    quantity: '?'
+  - name: viStart
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Global ViRMEn iteration count (vr.iterations) at trial start. Unit: iterations.'
+    quantity: '?'
+  - name: visualRule
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Whether visual cues are rewarding. Codes: 0=visual cues not rewarding, 1=visual
+      cues rewarding.'
+    quantity: '?'
+  - name: wallGuide
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: Boolean, whether wallGuides were active or not on this trial.
+    quantity: '?'
+- neurodata_type_def: VirmenEpochs
+  neurodata_type_inc: TimeIntervals
+  doc: ViRMEn blocks, one row per block
+  datasets:
+  - name: P_on
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: probability of a trial being a laser on trial.
+    quantity: '?'
+  - name: context
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Pro/anti context of the block. Codes: 1=Pro, 2=Anti, 3=probe maze.'
+    quantity: '?'
+  - name: delayDuration
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Delay duration. Unit: s.'
+    quantity: '?'
+  - name: doorstopStatus
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Doorstop condition of the block. Codes: 0=no doorstop, 1=visible doorstop,
+      2=invisible doorstop.'
+    quantity: '?'
+  - name: doorstopVelThresh1
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Delay period entry velocity threshold.
+    quantity: '?'
+  - name: doorstopVelThresh2
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Delay period entry velocity threshold.
+    quantity: '?'
+  - name: duration
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Duration of the block. Unit: s.'
+    quantity: '?'
+  - name: easyBlockFlag
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: 1 if block was flagged as easy (maze_id < main_maze_id)
+    quantity: '?'
+  - name: firstTrial
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: First trial run in block.
+    quantity: '?'
+  - name: frozenStimuli
+    neurodata_type_inc: VectorData
+    dtype: bool
+    doc: True if a custom (frozen) stimulus bank is used.
+    quantity: '?'
+  - name: isLinear
+    neurodata_type_inc: VectorData
+    dtype: int8
+    doc: 'Enforce linear task or alternation. Codes: 0=alternation, 1=linear.'
+    quantity: '?'
+  - name: lsrepoch
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: which task epochs the laser can be on in.
+    quantity: '?'
+  - name: mainMazeID
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Number of maze of "highest" level for subject.
+    quantity: '?'
+  - name: mazeID
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Number of maze run in block.
+    quantity: '?'
+  - name: rewardMiL
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Reward delivered during the block. Unit: mL.'
+    quantity: '?'
+  - name: shapingProtocol
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: Shaping protocol function handle.
+    quantity: '?'
+  - name: stage
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: variable tracking pro/anti training stage, since mazeID is used to handle
+      context switching.
+    quantity: '?'
+  - name: wall_clock_start
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: "Wall-clock time ViRMEn stamped on this block, in seconds since session_start_time.
+      The block's start_time is on the session clock and can differ from this stamp:
+      a block stamped during setup predates the elapsed clock. Unit: s."
+    quantity: '?'
+  - name: stimulusBank
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: Path to stimulus bank file used.
+    quantity: '?'
+  - name: stimulusConfig
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Index of stimulus configuration in the PoissonStimulusTrain bank.
+    quantity: '?'
+  - name: stimulusSet
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Stimulus set index.
+    quantity: '?'
+  - name: sublevel
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Sub-level within maze (LSTT gradual param change)
+    quantity: '?'
+  - name: trialParams_cueMaxProbability
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: max ratio of salient vs. distractor towers.
+    quantity: '?'
+  - name: trialParams_cueMinProbability
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: min ratio of salient vs. distractor towers.
+    quantity: '?'
+  - name: trialParams_difficultySet
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: Percent of easy, medium and hard trials, such as [50, 50, 0]. A single value
+      means the mix wasn't used; those logs store false, kept as 0.
+    quantity: '?'
+  - name: trialParams_difficultySet_index
+    neurodata_type_inc: VectorIndex
+    doc: Index into trialParams_difficultySet, which has a variable number of values
+      per row.
+    quantity: '?'
+  - name: trialParams_lCue
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Length of the cue segment. Unit: cm.'
+    quantity: '?'
+  - name: trialParams_lMemory
+    neurodata_type_inc: VectorData
+    dtype: float64
+    doc: 'Length of the segment after the cue segment, where no cues appear. Unit:
+      cm.'
+    quantity: '?'
+- neurodata_type_def: StimulusPairs
+  neurodata_type_inc: DynamicTable
+  doc: 'Stimulus pairs (PWM task), one row per (block, pair): the pair set can change
+    between blocks'
+  datasets:
+  - name: block
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: 'Block (1-based) in which this set of pairs applied: the pair set can change
+      between blocks.'
+    quantity: '?'
+  - name: PairNum
+    neurodata_type_inc: VectorData
+    dtype: int32
+    doc: Row index of the stimulus pair.
+    quantity: '?'
+  - name: Prob
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Prior probability of each pair.
+    quantity: '?'
+  - name: Sa
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Frequency of the first stimulus.
+    quantity: '?'
+  - name: Sb
+    neurodata_type_inc: VectorData
+    dtype: float32
+    doc: Frequency of the second stimulus.
+    quantity: '?'
+  - name: Side
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: 'Correct side for each pair. Codes: L=left, R=right.'
+    quantity: '?'
+- neurodata_type_def: VirmenSettings
+  neurodata_type_inc: DynamicTable
+  doc: Key/value table of ViRMEn settings whose meaning is unknown or defined by each
+    experiment.
+  datasets:
+  - name: key
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: ViRMEn log path of the value, with 1-based indexes for struct arrays.
+  - name: value
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: The recorded value, as text.
+  - name: meaning
+    neurodata_type_inc: VectorData
+    dtype: text
+    doc: What the value means, from the field registry.
